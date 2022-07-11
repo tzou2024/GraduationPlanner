@@ -61,6 +61,9 @@ This page shoud be some sort of checker to see whether the student is satysfying
 |    {Subject}   | Number       |
 
 
+## Worries
+Seems kind of intricate, not sure how I am going to have all of the models interact with each other. What other pieces do I need for classes? How does using classes and requirements/electives work?
+
 ## Stretch Goals
 
 <ul>
