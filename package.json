@@ -1,0 +1,32 @@
+{
+  "name": "graduationplanner",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon servier.js",
+    "seed": "node models/seed.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tzou2024/GraduationPlanner.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tzou2024/GraduationPlanner/issues"
+  },
+  "homepage": "https://github.com/tzou2024/GraduationPlanner#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "connect-mongo": "^4.6.0",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-session": "^1.17.3",
+    "liquid-express-views": "^1.0.8",
+    "method-override": "^3.0.0",
+    "mongoose": "^6.4.4",
+    "morgan": "^1.10.0"
+  }
+}
