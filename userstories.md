@@ -23,14 +23,26 @@ Students should be able to create an account with username and password, and sel
 ### Main Page / Course Schedule
 This page should be a semester-by-semester schedule with the names of classes students have taken/plan to take listed out. Users should also be able to add a class from this page, or edit/delete a class from this page.
 
-### Add/Edit/Delete Page
+### CRUDable Classes
 This page should have information about a singular class with RESTful routing.
+
+| Name     | Path | HTTP | Purpose |
+|----------|------|------|---------|
+| Index    | classes | GET | Displayes all classes | 
+| New     | classes/new   | GET | Shows form for creating new class | 
+| Create  | classes       | POST| Creates a new class |
+| Show    | classes/:id   | GET | Shows one specified class |
+| Edit    | class/:id?edit|GET  | Shows edit form for one class |
+| Update  | class/:id     | PUT | Updates a Class | 
+| Destroy | class/:id     | DELETE | Deletes a class |
 
 ### General Credit Breakdown 
 This page should show information about the total credit requirments for ENG, SCI, ect. and how much they need to take/how much they have left to do as part of general graudation requirements.
 
+### Question: 
+
 ### Major-Specific Breakdown
-This page shoud be some sort of checker to see whether the student is satysfying all of the required courses for their specific major
+This page shoud be some sort of checker to see whether the student is satysfying all of the required courses for their specific major.
 
 
 ## Model
@@ -54,15 +66,19 @@ This page shoud be some sort of checker to see whether the student is satysfying
 |    Required Classes   | List?   |
 |    Electives  | List?   |
 
-### General Requirements (?)
+### Users
 
 | Key     | Value |
 | ----------- | ----------- |
-|    {Subject}   | Number       |
+| Username   | String    |
+| Password | String |
+| Plan | Subschema | 
 
+### Plan Subchema
 
-## Worries
-Seems kind of intricate, not sure how I am going to have all of the models interact with each other. What other pieces do I need for classes? How does using classes and requirements/electives work?
+| Key     | Value |
+| {req}   | {Class Id} | 
+
 
 ## Stretch Goals
 
