@@ -28,7 +28,7 @@ db.on('open', () =>{
     ]
     Class.deleteMany({})
     .then((deletedClasses) =>{
-        console.log("Deleted Current")
+        console.log("Deleted Classes")
 
         Class.create(startClasses)
             .then(data =>{
