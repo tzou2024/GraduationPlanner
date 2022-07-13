@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/superkube@latest/dist/superkube.min.css">
+            <link rel="stylesheet" href="/styles.css">
+            <title>My Fruits</title>
+           
+        </head>
+        <body>
+            <main class="container edges centered" >
+            <header class="header">
+                {% if session.loggedIn == true%}
+                    <div class="navbar">
+                        <div class="navbar-container">
+                            <div class="navbar-brand">
+                                <a href="#" class="brand">One</a>
+                            </div>
+
+                            <div class="navbar-action push-right">
+                                <a href="/users/logout" class="button button-dark button-small">Logout</a>
+                            </div>
+                            
+                            
+                        </div>
+                    </div>
+                {% endif %}
+            </header>
+
+            
+            
+                {% block content %}
+                my content
+                {% endblock%}
+            <main>
+        </body>
+    </html>

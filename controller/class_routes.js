@@ -1,13 +1,13 @@
 const express = require('express')
 const Class = require('../models/class')
 const router = express.Router()
-//importing fruit model to access database
-const Fruit = require('../models/class')
 
 router.get('/', (req, res) =>{
+    console.log(req.session)
+    let session = req.session
     Class.find({})
         .then(classes=>{
-            res.send(classes)
+            res.render('classes/index', {session: session})
         })
         .catch(err=>{
             res.json(err)

@@ -10,7 +10,6 @@ const classSchema = new Schema({
         type: String,
         required: true
     },
-    semester: Number,
     credit_and_category: Object,
     place: {
         type: String,
