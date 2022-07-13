@@ -1,12 +1,22 @@
 {% layout 'layout.liquid' %}
 {% block content %}
+<div class="hero bg-aluminum">
+    <div class="hero-container container centered edges pt-10 pb-15">
+        <div class="hero-head">
+            <h1 class="heading-mega align-center">Grad</h1>
+        </div>
+        <div class="hero-body mt-3 align-center">
+            <p class="text-large text-dark-mid">Plan College</p>
+        </div>
+    </div>
+</div>
 
-<div class="container">
-    <div class="grid grid-auto grid-3-sm mt-30">
+<div class="container centered edges">
+    <div class="grid grid-auto grid-3-sm mt-5">
         <div class="column">
         </div>
         <div class="column">
-            <h1 class="align-center heading-mega mb-5">
+            <h1 class="align-center heading-large mb-5">
                 Login
             </h1>
             <form class="form" action="/users/login" method="POST">
