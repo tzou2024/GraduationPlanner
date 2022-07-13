@@ -28,6 +28,18 @@
                     <label> Password </label>
                     <input class="input align-center" type="password" placeholder="password" name="password">
                 </div>
+                <div class="form-item align-center">
+                    <label>Major</label>
+                    {% comment %} ["ME", "ECE", "EBio", "E:C", "E:D", "E:Robo", "E:Sust"] {% endcomment %}
+                    <select class="input align-center" name="major">
+                        <option value="ME">ME</option>
+                        <option value="ECE">ECE</option>
+                        <option value="EBio">EBio</option>
+                        <option value="E:C">E:C</option>
+                        <option value="E:Robo">E:Robo</option>
+                        <option value="E:Sust">E:Sust</option>
+                    </select>
+                </div>
             <div class="align-center">
                 <input 
                     type="submit" 

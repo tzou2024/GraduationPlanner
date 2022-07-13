@@ -2,6 +2,10 @@ const express = require('express')
 const Class = require('../models/class')
 const router = express.Router()
 
+
+//=============================
+//GET Request Index
+//=============================
 router.get('/', (req, res) =>{
     console.log(req.session)
     let session = req.session
