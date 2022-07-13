@@ -10,17 +10,23 @@
            
         </head>
         <body>
-            <main class="container edges centered" >
+            
             <header class="header">
                 {% if session.loggedIn == true%}
-                    <div class="navbar">
+                    <div class="navbar bg-dark centered edges">
                         <div class="navbar-container">
-                            <div class="navbar-brand">
-                                <a href="#" class="brand">One</a>
-                            </div>
+                            <nav class="nav nav-centered nav-light nav-semibold">
+                                <ul class="nav-list">
+                                    <li class="nav-item"><a href="#" class="nav-link">Products</a></li>
+                                    <li class="nav-item"><a href="#" class="nav-link">About</a></li>
+                                    <li class="nav-item"><a href="#" class="nav-link">Services</a></li>
+                                    <li class="nav-item"><a href="#" class="nav-link">Contact</a></li>
+                                </ul>
+                            </nav>
+
 
                             <div class="navbar-action push-right">
-                                <a href="/users/logout" class="button button-dark button-small">Logout</a>
+                                <a href="/users/logout" class="button button-light-outline button-round button-small">Logout</a>
                             </div>
                             
                             
@@ -30,7 +36,7 @@
             </header>
 
             
-            
+            <main class="container edges centered mt-5" >
                 {% block content %}
                 my content
                 {% endblock%}
