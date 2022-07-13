@@ -1,0 +1,60 @@
+{% layout 'layout.liquid' %}
+{% block content %}
+
+<div class="container centered edges">
+    <div class="grid grid-auto grid-3-sm mt-5">
+        <div class="column">
+        </div>
+        <div class="column">
+            <h1 class="align-center heading-large mb-5">
+                Create a Class
+            </h1>
+            <form class="form" action="/classes" method="POST">
+                <div class="form-item centered align-center ">
+                    <label> Name </label>
+                    <input class="input align-center" type="text" placeholder="QEA1" name="name">
+                </div>
+                <div class="form-item centered align-center">
+                    <label> Place </label>
+                    <input class="input align-center" type="text" placeholder="Olin, Babson, Abroad" name="place">
+                </div>
+                <div class="form-item centered align-center">
+                    <label> Credits </label>
+                <table class="table align-center">
+                    <tbody class="align-center">
+                        <tr class="align-center">
+                            <td><input class="input align-center" type="text" placeholder="AHS" name="cat1"></td> 
+                            <td><input class="input align-center" type="number" min="0" placeholder="4" name="cred1"></td>
+                        </tr>
+                        <tr class="align-center">
+                            <td><input class="input align-center" type="text" placeholder="AHS" name="cat2"></td> 
+                            <td><input class="input align-center" type="number" min="0" placeholder="4" name="cred2"></td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+                <div class="form-item centered align-center">
+                    <label> fulfills </label>
+                    <input class="input align-center" type="text" placeholder="Probstat" name="fulfills">
+                </div>
+                <div class="align-center">
+                <input 
+                    type="submit" 
+                    value="Create Class" 
+                    class="button button-primary centered align-center"
+                >
+                    
+                </div>
+                <div class="mt-3 align-center">
+                <a class="" href="/classes/index">Back to Index</a>
+                </div>
+                
+            </form>
+        </div> 
+        <div class="column">
+        </div> 
+    
+    </div>
+</div>
+
+{% endblock %}
