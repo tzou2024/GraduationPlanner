@@ -22,20 +22,27 @@
                     <label> Credits </label>
                 <table class="table align-center">
                     <tbody class="align-center">
-                        <tr class="align-center">
-                            <td><input class="input align-center" type="text" placeholder="AHS" name="cat1"></td> 
-                            <td><input class="input align-center" type="number" min="0" placeholder="4" name="cred1"></td>
-                        </tr>
-                        <tr class="align-center">
-                            <td><input class="input align-center" type="text" placeholder="AHS" name="cat2"></td> 
-                            <td><input class="input align-center" type="number" min="0" placeholder="4" name="cred2"></td>
-                        </tr>
+                        {% for i in (1..2)%}
+                            <tr class="align-center">
+                            <td>
+                                <select class="input align-center" name="cat{{i}}">
+                                    {% for j in catoptions %}
+                                        <option value="{{j}}">{{j}}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td><input class="input align-center" type="number" min="0" placeholder="4" name="cred{{i}}"></td>
+                        {% endfor %}
                     </tbody>
                     </table>
                 </div>
                 <div class="form-item centered align-center">
                     <label> fulfills </label>
-                    <input class="input align-center" type="text" placeholder="Probstat" name="fulfills">
+                    <select class="input align-center" name="fulfills">
+                        {% for j in fulloptions %}
+                            <option value="{{j}}">{{j}}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="align-center">
                 <input 
@@ -46,7 +53,7 @@
                     
                 </div>
                 <div class="mt-3 align-center">
-                <a class="" href="/classes/index">Back to Index</a>
+                <a class="" href="/classes">Back to Index</a>
                 </div>
                 
             </form>

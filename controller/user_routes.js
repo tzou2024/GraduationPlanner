@@ -3,6 +3,7 @@ const express = require('express')
 //importing fruit model to access database
 const User = require('../models/user')
 
+const userSchema = User.schema
 //bcrypt is used to hash(encrypt) passwords
 const bcrypt = require('bcryptjs')
 const { Error } = require('mongoose')
@@ -14,7 +15,8 @@ const router = express.Router()
 // GET Request Signup
 //=============================
 router.get('/signup', (req,res) =>{
-    res.render('users/signup')
+    console.log(userSchema.obj.major.enum)
+    res.render('users/signup', {userSchema})
 })
 
 
