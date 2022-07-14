@@ -5,19 +5,26 @@
     <h1 class="align-center heading-large mb-5">Search Results</h1>
     <div class="grid">
         {% for cls in foundClasses %}
+            <form class="mt-5" action="/classes/search?_method=PUT" method="POST">
             <div class="column column-3 card p-5 shadow-150 bg-light radius-base">
                 <div class="card-head align-center">
-                    <h2 class="heading-medium">
-                        <a href="#">{{cls.name}}</a>
+                    <h2 type="input" name="classname" value="{{cls.name}}"class="form-item heading-medium">
+                        {{cls.name}}
                     </h2>
+                    <input type="hidden" name="classname" value="{{cls._id}}">
                 </div>
                 <div class="card-body align-center mt-3">
-                    <p class="text-medium">{{cls.credit_and_category}}</p>
-                    <form class="mt-5">
-                        <input type="submit" class="button button-primary" value="add class">
-                    </form>
+                    <div>
+                    <p class="text-large">{{cls.credit_and_category}}</p>
+                    </div>
+                    <div>
+                    <input  style="width: 90px"class="form-item align-center mt-2" type="number" min="0" name="semester">
+                    <p> choose semester </p>
+                    </div>
+                    <input type="submit" class="button button-primary" value="add class">
                 </div>
             </div>
+            </form>
         {% endfor%}
     </div>
 </div>

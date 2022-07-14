@@ -1,5 +1,6 @@
 const express = require('express')
 const Class = require('../models/class')
+const User = require('../models/user')
 const router = express.Router()
 const classSchema = Class.schema
 
@@ -53,7 +54,7 @@ router.post('/', (req,res) =>{
     if(fulfills != ''){
         newClass['fulfills'] = fulfills
     }
-    console.log(newClass)
+    //console.log(newClass)
     Class.create(newClass)
         .then(fruit =>{
             console.log("CLASS CREATED:", fruit)
@@ -68,7 +69,7 @@ router.post('/', (req,res) =>{
 //=============================
 router.get('/search', (req, res) =>{
     //console.log("CURRENT SESSION: ",req.session)
-    console.log(req.session)
+    //console.log(req.session)
     // let session = req.session
     // const catoptions = ["","ENGR", "MTH", "SCI", "AHS", "E!", "GENERAL", "NON-DEGREE", "SUST"]
     // let fulloptions = classSchema.obj.fulfills.enum
@@ -97,18 +98,20 @@ router.post('/search', (req,res) =>{
     //get search and display results
     //if name, fulfills, or place then direct search,
     let {searchcat, searchterm} = req.body
-    console.log(searchcat)
+    //console.log(searchcat)
     if (["name", "place", "fulfills"].includes(searchcat)){
         let query = {}
         query[searchcat] = searchterm
         Class.find(query)
         .then(foundClasses=>{
+            
             let foundClassesclone = [...foundClasses]
+            console.log(foundClassesclone)
             foundClassesclone.forEach(ell=>{
                 ell.credit_and_category = JSON.stringify(ell.credit_and_category)
             })
             res.render('classes/results', {foundClasses: foundClassesclone, session: req.session})
-            console.log(res)
+            //console.log(res)
 
         })
         .catch(err=>{
@@ -119,12 +122,32 @@ router.post('/search', (req,res) =>{
 
 
     //TODO if cred, then search in cred
+    router.post('/add', (req,res) =>{
+
+    })
     
 })
 
 //=============================
-//GET Request Search Results
+//PUT Request Add class to my 
 //=============================
-
+router.put('/search', (req,res) =>{
+    console.log(req.session.userId)
+    const Id = req.session.userId
+    let {classname, semester} = req.body
+    User.findById(Id)
+    .then(user=>{
+        let ob = {}
+        ob[semester] = classname
+        user.classes.push(ob)
+        console.log(user)
+        return user.save()
+    })
+    .catch(error=>{
+        console.log("Error adding class to user: ", error)
+    })
+    res.redirect('/classes/search')
+    
+})
 
 module.exports = router
