@@ -12,14 +12,37 @@ function objToString (obj) {
     return str;
 }
 
+function removeClassfromUser(usr, clas){
+    console.log("got here")
+    console.log("usr.classes: ",usr.classes)
+    console.log(typeof [...user.classes])
+
+}
 //=============================
 //DELETE Route Delete Class
 //=============================
 router.delete("/:id", (req,res) =>{
     const classId= req.params.id
+    
 
     Class.findByIdAndRemove(classId)
     .then(classf =>{
+
+        User.find({})
+        .then(userlist =>{
+            //console.log(userlist)
+            userlist.forEach((user) =>{
+                //console.log(user, user.classes, classId)
+                removeClassfromUser(user, classId)
+                user.save()
+            })
+        })
+        .catch(err=>{
+            console.log("err removing class from users")
+        })
+
+
+
         res.redirect('/catalogue')
     })
     .catch(err =>{
@@ -54,39 +77,7 @@ router.get("/:id/edit", (req,res) =>{
 
 })
 
-//=============================
-//PUT Route Edit Class
-//=============================
-router.put('/:id', (req,res) =>{
-    let classId = req.params.id
-    let copy = {...req.body}
-    let{name, place, cat1, cred1, cat2, cred2, cat3, cred3, fulfills} = copy
-    let newClass = {
-        name: name,
-        place: place,
-        credit_and_category: {
-            [cat1]: parseInt(cred1)
-        }
-    }
-    if(cat2 != ''){
-        newClass.credit_and_category[cat2] = parseInt(cred2)
-    }
-    if(cat3 != ''){
-        newClass.credit_and_category[cat3] = parseInt(cred3)
-    }
-    if(fulfills != ''){
-        newClass['fulfills'] = fulfills
-    }
 
-    Class.findByIdAndUpdate(classId, newClass, {new:true})
-        .then(classf=>{
-            res.redirect( `/catalogue/${classf._id}`)
-
-        })
-        .catch(err=>{
-            console.log("ERROR EDITING CLASS: ", err)
-        })
-})
 
 //=============================
 //GET Request Index
@@ -191,15 +182,17 @@ router.post('/search', (req,res) =>{
     //console.log(searchcat)
     if (["name", "place", "fulfills"].includes(searchcat)){
         let query = {}
-        query[searchcat] = searchterm
+        const re = new RegExp(`${searchterm}`)
+        query[searchcat] = re
         Class.find(query)
         .then(foundClasses=>{
-            
+            console.log(query)      
             let foundClassesclone = [...foundClasses]
-            console.log(foundClassesclone)
+            //console.log(foundClassesclone)
             foundClassesclone.forEach(ell=>{
-                ell.credit_and_category = objToString(ell.credt_and_cateogry)
+                ell.credit_and_category = objToString(ell.credit_and_category)
             })
+            //console.log("GOT HERE")
             res.render('catalogue/results', {foundClasses: foundClassesclone, session: req.session})
             //console.log(res)
 
@@ -228,7 +221,8 @@ router.put('/search', (req,res) =>{
     User.findById(Id)
     .then(user=>{
         let ob = {}
-        ob[semester] = classname
+        ob["class"] = classname
+        ob["semester"] = parseInt(semester)
         user.classes.push(ob)
         console.log(user)
         return user.save()
@@ -258,6 +252,40 @@ router.get('/:id', (req,res) =>{
             res.redirect('/catalogue')
         })
     
+})
+
+//=============================
+//PUT Route Edit Class
+//=============================
+router.put('/:id', (req,res) =>{
+    let classId = req.params.id
+    let copy = {...req.body}
+    let{name, place, cat1, cred1, cat2, cred2, cat3, cred3, fulfills} = copy
+    let newClass = {
+        name: name,
+        place: place,
+        credit_and_category: {
+            [cat1]: parseInt(cred1)
+        }
+    }
+    if(cat2 != ''){
+        newClass.credit_and_category[cat2] = parseInt(cred2)
+    }
+    if(cat3 != ''){
+        newClass.credit_and_category[cat3] = parseInt(cred3)
+    }
+    if(fulfills != ''){
+        newClass['fulfills'] = fulfills
+    }
+
+    Class.findByIdAndUpdate(classId, newClass, {new:true})
+        .then(classf=>{
+            res.redirect( `/catalogue/${classf._id}`)
+
+        })
+        .catch(err=>{
+            console.log("ERROR EDITING CLASS: ", err)
+        })
 })
 
 

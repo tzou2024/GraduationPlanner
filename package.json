@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon servier.js",
-    "seed": "node models/seed.js"
+    "seed": "node models/seed.js",
+    "deleteUsers": "node models/deleteUsers.js",
+    "troubleshoot" : "npm run seed npm run deleteUsers"
   },
   "repository": {
     "type": "git",

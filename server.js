@@ -13,6 +13,8 @@ const methodOverride = require('method-override')
 const userRoutes = require('./controller/user_routes')
 const catalogueRoutes = require('./controller/catalogue_routes')
 
+const scheduleRoutes = require('./controller/schedule_routes')
+
 
 //=============================
 // Create our express application object
@@ -59,6 +61,8 @@ app.use(
 app.use('/catalogue', catalogueRoutes)
 //use user pathing
 app.use('/users', userRoutes)
+//use schedule pathing
+app.use('/schedule', scheduleRoutes)
 
 app.get('/', (req, res) => {
 	res.redirect('/users/login')
