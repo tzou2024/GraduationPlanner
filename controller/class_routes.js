@@ -12,7 +12,7 @@ router.get('/', (req, res) =>{
     let session = req.session
     Class.find({})
         .then(classes=>{
-            res.render('classes/index', {session: session})
+            res.render('classes/index', {session: session, classes: classes})
         })
         .catch(err=>{
             res.json(err)
@@ -62,6 +62,69 @@ router.post('/', (req,res) =>{
         .catch(err => res.json(err))
     
 })
+
+//=============================
+//GET Request Search Class
+//=============================
+router.get('/search', (req, res) =>{
+    //console.log("CURRENT SESSION: ",req.session)
+    console.log(req.session)
+    // let session = req.session
+    // const catoptions = ["","ENGR", "MTH", "SCI", "AHS", "E!", "GENERAL", "NON-DEGREE", "SUST"]
+    // let fulloptions = classSchema.obj.fulfills.enum
+    // fulloptions.unshift('')
+
+    //create route to search for classes
+   
+    let keys= Object.keys(classSchema.obj)
+    
+     //TODO: add search for credit category
+    keys = keys.filter(ell=>{
+        return ell != "credit_and_category"
+    })
+    // const index = keys.indexOf('credit_and_category')
+    // if(index != -1){
+    //     keys[index] = "credit category"
+    // }
+    res.render('classes/search', {keys, session:req.session})
+})
+
+//=============================
+//POST Request Create Class
+//=============================
+router.post('/search', (req,res) =>{
+    //console.log("REQ: ",req.body)
+    //get search and display results
+    //if name, fulfills, or place then direct search,
+    let {searchcat, searchterm} = req.body
+    console.log(searchcat)
+    if (["name", "place", "fulfills"].includes(searchcat)){
+        let query = {}
+        query[searchcat] = searchterm
+        Class.find(query)
+        .then(foundClasses=>{
+            let foundClassesclone = [...foundClasses]
+            foundClassesclone.forEach(ell=>{
+                ell.credit_and_category = JSON.stringify(ell.credit_and_category)
+            })
+            res.render('classes/results', {foundClasses: foundClassesclone, session: req.session})
+            console.log(res)
+
+        })
+        .catch(err=>{
+            console.log('error searching name place for fulfills')
+            res.redirect('/classes/search')
+        })
+    }
+
+
+    //TODO if cred, then search in cred
+    
+})
+
+//=============================
+//GET Request Search Results
+//=============================
 
 
 module.exports = router
