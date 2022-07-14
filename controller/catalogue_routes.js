@@ -12,9 +12,9 @@ function objToString (obj) {
     return str;
 }
 
-//////////////////////////
-//DELETE Route update fruit
-//////////////////////////
+//=============================
+//DELETE Route Delete Class
+//=============================
 router.delete("/:id", (req,res) =>{
     const classId= req.params.id
 
@@ -26,6 +26,31 @@ router.delete("/:id", (req,res) =>{
         res.json(err)
     })
 })
+
+//=============================
+//GET Route Edit Class
+//=============================
+router.get("/:id/edit", (req,res) =>{
+    const classId= req.params.id
+    const catoptions = ["ENGR", "MTH", "SCI", "AHS", "E!", "GENERAL", "NON-DEGREE", "SUST"]
+    let fulloptions = classSchema.obj.fulfills.enum
+
+    Class.findById(classId)
+        .then(classf =>{
+            
+            const keys = Object.keys(classf.credit_and_category)
+            const values = Object.values(classf.credit_and_category)
+            console.log(keys, values)
+            const length = keys.length - 1
+
+            res.render('catalogue/edit', {class: classf, catoptions, fulloptions, keys, values, length, session: req.session})
+        })
+        .catch(err=>{
+            res.json(err)
+        })
+
+})
+
 
 //=============================
 //GET Request Index
