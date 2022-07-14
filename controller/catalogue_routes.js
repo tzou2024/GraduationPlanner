@@ -40,6 +40,9 @@ router.get("/:id/edit", (req,res) =>{
             
             const keys = Object.keys(classf.credit_and_category)
             const values = Object.values(classf.credit_and_category)
+            keys.unshift("")
+            catoptions.unshift("")
+            values.unshift("")
             console.log(keys, values)
             const length = keys.length - 1
 
@@ -51,6 +54,39 @@ router.get("/:id/edit", (req,res) =>{
 
 })
 
+//=============================
+//PUT Route Edit Class
+//=============================
+router.put('/:id', (req,res) =>{
+    let classId = req.params.id
+    let copy = {...req.body}
+    let{name, place, cat1, cred1, cat2, cred2, cat3, cred3, fulfills} = copy
+    let newClass = {
+        name: name,
+        place: place,
+        credit_and_category: {
+            [cat1]: parseInt(cred1)
+        }
+    }
+    if(cat2 != ''){
+        newClass.credit_and_category[cat2] = parseInt(cred2)
+    }
+    if(cat3 != ''){
+        newClass.credit_and_category[cat3] = parseInt(cred3)
+    }
+    if(fulfills != ''){
+        newClass['fulfills'] = fulfills
+    }
+
+    Class.findByIdAndUpdate(classId, newClass, {new:true})
+        .then(classf=>{
+            res.redirect( `/catalogue/${classf._id}`)
+
+        })
+        .catch(err=>{
+            console.log("ERROR EDITING CLASS: ", err)
+        })
+})
 
 //=============================
 //GET Request Index
@@ -91,7 +127,7 @@ router.get('/new', (req, res) =>{
 router.post('/', (req,res) =>{
     //console.log(req.body)
     let copy = {...req.body}
-    let{name, place, cat1, cred1, cat2, cred2, fulfills} = copy
+    let{name, place, cat1, cred1, cat2, cred2, cat3, cred3, fulfills} = copy
     let newClass = {
         name: name,
         place: place,
@@ -101,6 +137,9 @@ router.post('/', (req,res) =>{
     }
     if(cat2 != ''){
         newClass.credit_and_category[cat2] = parseInt(cred2)
+    }
+    if(cat3 != ''){
+        newClass.credit_and_category[cat3] = parseInt(cred3)
     }
     if(fulfills != ''){
         newClass['fulfills'] = fulfills
