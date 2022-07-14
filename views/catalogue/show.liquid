@@ -1,0 +1,42 @@
+{% layout 'layout.liquid' %}
+{% block content %}
+
+<div class="container centered edges">
+    <div class="grid grid-auto grid-3-sm mt-5">
+        <div class="column">
+        </div>
+        <div class="column">
+            <h1 class="align-center heading-large mb-5">
+                {{class.name}}
+            </h1>
+            <table class="table align-center table-striped table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="align-center"><b>Place: </b></td>
+                        <td class="align-center">{{class.place}}</td>
+                    </tr>
+                    <tr>
+                        <td class="align-center"><b>Fulfills: </b></td>
+                        <td class="align-center">{{class.fulfills}}</td>
+                    </tr>
+                    <tr>
+                        <td class="align-center"><b>Credits: </b></td>
+                        <td class="align-center">{{class.credit_and_category}}</td>
+                    </tr>
+                </tbody>
+                </table>
+            
+
+                    
+            <div class="mt-3 align-center">
+            <a class="" href="/catalogue">Back to Index</a>
+            </div>
+        </div> 
+        <div class="column">
+        </div> 
+    
+    </div>
+</div>
+
+
+{% endblock %}

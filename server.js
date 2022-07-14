@@ -11,7 +11,7 @@ const methodOverride = require('method-override')
 // import routes
 //=============================
 const userRoutes = require('./controller/user_routes')
-const classRoutes = require('./controller/class_routes')
+const catalogueRoutes = require('./controller/catalogue_routes')
 
 
 //=============================
@@ -56,7 +56,7 @@ app.use(
 // Routes
 //=============================
 
-app.use('/classes', classRoutes)
+app.use('/catalogue', catalogueRoutes)
 //use user pathing
 app.use('/users', userRoutes)
 

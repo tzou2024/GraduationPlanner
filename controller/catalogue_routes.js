@@ -4,6 +4,28 @@ const User = require('../models/user')
 const router = express.Router()
 const classSchema = Class.schema
 
+function objToString (obj) {
+    let str = '';
+    for (const [p, val] of Object.entries(obj)) {
+        str += `${p}: ${val}\n`;
+    }
+    return str;
+}
+
+//////////////////////////
+//DELETE Route update fruit
+//////////////////////////
+router.delete("/:id", (req,res) =>{
+    const classId= req.params.id
+
+    Class.findByIdAndRemove(classId)
+    .then(classf =>{
+        res.redirect('/catalogue')
+    })
+    .catch(err =>{
+        res.json(err)
+    })
+})
 
 //=============================
 //GET Request Index
@@ -13,7 +35,11 @@ router.get('/', (req, res) =>{
     let session = req.session
     Class.find({})
         .then(classes=>{
-            res.render('classes/index', {session: session, classes: classes})
+            let classesclone = [...classes]
+            classesclone.forEach(ell=>{
+                ell.credit_and_category = objToString(ell.credit_and_category)
+            })
+            res.render('catalogue/index', {session: session, classes: classesclone})
         })
         .catch(err=>{
             res.json(err)
@@ -31,7 +57,7 @@ router.get('/new', (req, res) =>{
     const catoptions = ["","ENGR", "MTH", "SCI", "AHS", "E!", "GENERAL", "NON-DEGREE", "SUST"]
     let fulloptions = classSchema.obj.fulfills.enum
     fulloptions.unshift('')
-    res.render('classes/new', {session: req.session, catoptions, fulloptions})
+    res.render('catalogue/new', {session: req.session, catoptions, fulloptions})
 })
 
 //=============================
@@ -58,7 +84,7 @@ router.post('/', (req,res) =>{
     Class.create(newClass)
         .then(fruit =>{
             console.log("CLASS CREATED:", fruit)
-            res.redirect('/classes')
+            res.redirect('/catalogue')
         })
         .catch(err => res.json(err))
     
@@ -87,7 +113,7 @@ router.get('/search', (req, res) =>{
     // if(index != -1){
     //     keys[index] = "credit category"
     // }
-    res.render('classes/search', {keys, session:req.session})
+    res.render('catalogue/search', {keys, session:req.session})
 })
 
 //=============================
@@ -108,23 +134,23 @@ router.post('/search', (req,res) =>{
             let foundClassesclone = [...foundClasses]
             console.log(foundClassesclone)
             foundClassesclone.forEach(ell=>{
-                ell.credit_and_category = JSON.stringify(ell.credit_and_category)
+                ell.credit_and_category = objToString(ell.credt_and_cateogry)
             })
-            res.render('classes/results', {foundClasses: foundClassesclone, session: req.session})
+            res.render('catalogue/results', {foundClasses: foundClassesclone, session: req.session})
             //console.log(res)
 
         })
         .catch(err=>{
             console.log('error searching name place for fulfills')
-            res.redirect('/classes/search')
+            res.redirect('/catalogue/search')
         })
     }
 
 
     //TODO if cred, then search in cred
-    router.post('/add', (req,res) =>{
+    // router.post('/add', (req,res) =>{
 
-    })
+    // })
     
 })
 
@@ -146,8 +172,29 @@ router.put('/search', (req,res) =>{
     .catch(error=>{
         console.log("Error adding class to user: ", error)
     })
-    res.redirect('/classes/search')
+    res.redirect('/catalogue/search')
     
 })
+
+//=============================
+//GET Request show class 
+//=============================
+router.get('/:id', (req,res) =>{
+    const classId = req.params.id
+
+    Class.findById(classId)
+        .then(classf=>{
+            
+            classf.credit_and_category = objToString(classf.credit_and_category)
+            // classf.credit_and_category = classf.credit_and_cateogry.replaceAll('"{}', '')
+            res.render('catalogue/show', {session: req.session, class:classf })
+        })
+        .catch(err=>{
+            console.log(err)
+            res.redirect('/catalogue')
+        })
+    
+})
+
 
 module.exports = router
