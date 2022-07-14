@@ -15,8 +15,12 @@ function objToString (obj) {
 function removeClassfromUser(usr, clas){
     console.log("got here")
     console.log("usr.classes: ",usr.classes)
-    console.log(typeof [...user.classes])
-
+    console.log(Array.isArray(usr.classes))
+    let copy = usr.classes.filter((clat) =>{
+        return clat.class != clas
+    })
+    console.log("filtered user: ", copy)
+    return copy
 }
 //=============================
 //DELETE Route Delete Class
@@ -33,8 +37,10 @@ router.delete("/:id", (req,res) =>{
             //console.log(userlist)
             userlist.forEach((user) =>{
                 //console.log(user, user.classes, classId)
-                removeClassfromUser(user, classId)
+                user.classes = removeClassfromUser(user, classId)
                 user.save()
+                console.log("SAVED USER: ", user)
+                
             })
         })
         .catch(err=>{
