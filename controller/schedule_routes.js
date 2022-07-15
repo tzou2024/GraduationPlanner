@@ -114,6 +114,7 @@ router.put("/:id/:semester", (req,res) =>{
     console.log("ID AT TOP: ", ID)
     const semnumb = parseInt(req.params.semester)
     const semester_to_change_to = parseInt(req.body.semnumbtochangeto)
+    console.log("REQ BODY: ", req.body)
     User.findById(userId)
         .then(fuser =>{
             console.log("SEMESTER_TO_CHANGE_TO: ",semester_to_change_to)
@@ -130,19 +131,15 @@ router.put("/:id/:semester", (req,res) =>{
                     // console.log("iteratednotfound")
                     return ell
                 }
-            })
+            }) 
             console.log("NEWMAP: ", newmap)
             fuser.classes = newmap
-            fuser.markModified('classes')
             console.log("NEW FUSER>CLASSES: ", fuser.classes)
             return fuser.save()
                 .then(savedDoc =>{
-                    console.log(fuser, savedDoc,"savedDoc === fuser ",savedDoc === fuser)
+                    console.log(savedDoc == fuser)
                     res.redirect('/schedule')
                 })
-                
-            
-            
 
         })
         .catch(err=>{
