@@ -37,12 +37,17 @@ router.get('/', async function (req,res, next){
 //=============================
 router.delete("/:id", (req,res) =>{
     const classId= req.params.id
-    
-
-    Class.findByIdAndRemove(classId)
-    .then(classf =>{
-
-        User.find({})
+    function removeClassfromUser(usr, clas){
+        console.log("got here")
+        console.log("usr.classes: ",usr.classes)
+        console.log(Array.isArray(usr.classes))
+        let copy = usr.classes.filter((clat) =>{
+            return clat.class != clas
+        })
+        console.log("filtered user: ", copy)
+        return copy
+    }
+    User.find({})
         .then(userlist =>{
             //console.log(userlist)
             userlist.forEach((user) =>{
@@ -56,14 +61,7 @@ router.delete("/:id", (req,res) =>{
         .catch(err=>{
             console.log("err removing class from users")
         })
-
-
-
-        res.redirect('/catalogue')
-    })
-    .catch(err =>{
-        res.json(err)
-    })
+    res.redirect('/schedule')
 })
 
 module.exports = router
