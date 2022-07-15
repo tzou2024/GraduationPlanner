@@ -17,7 +17,9 @@
                     <td class="align-center"><b>Sem {{forloop.index}}:</b></td>
                     {% for j in (0..4)%}
                         <td class="align-center">
-                            {{semester[j].name}}
+                            {% if semester[j].name %}
+                            <b><a href="/catalogue/{{semester[j]._id}}">{{semester[j].name}}</a></b>
+                            {% endif %}
                         </td>
                     {% endfor %}
                 </tr>
