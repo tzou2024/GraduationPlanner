@@ -22,7 +22,7 @@ router.get('/', async function (req,res, next){
             })
             classstruct.push(semesterstruct)
         }
-        setTimeout(() => console.log("classstruct: ",classstruct), 500)
+        //setTimeout(() => console.log("classstruct: ",classstruct), 500)
         res.render('schedule/index', {classes: classstruct,
         session: req.session})
     })
@@ -37,12 +37,18 @@ router.get('/', async function (req,res, next){
 //=============================
 router.delete("/:id", (req,res) =>{
     const classId= req.params.id
-    function removeClassfromUser(usr, clas){
-        console.log("got here")
+    const semnumb = req.body.semnumb
+    console.log("semnumb: ",semnumb)
+    console.log("typeof: ", typeof(semnumb))
+
+    function removeClassfromUser(usr, clas, numb){
+        // console.log("got here")
         console.log("usr.classes: ",usr.classes)
-        console.log(Array.isArray(usr.classes))
+        // console.log(Array.isArray(usr.classes))
         let copy = usr.classes.filter((clat) =>{
-            return clat.class != clas
+            console.log(clat.class, clas, clat.semester, parseInt(numb))
+            console.log(((clat.class != clas) ,(clat.semester != numb)))
+            return (((clat.class != clas) ,(clat.semester != numb)))
         })
         console.log("filtered user: ", copy)
         return copy
@@ -52,7 +58,7 @@ router.delete("/:id", (req,res) =>{
             //console.log(userlist)
             userlist.forEach((user) =>{
                 //console.log(user, user.classes, classId)
-                user.classes = removeClassfromUser(user, classId)
+                user.classes = removeClassfromUser(user, classId, semnumb)
                 user.save()
                 console.log("SAVED USER: ", user)
                 
