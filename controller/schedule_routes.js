@@ -35,22 +35,22 @@ router.get('/', async function (req,res, next){
 //=============================
 //DELETE Route Delete Class
 //=============================
-router.delete("/:id", (req,res) =>{
+router.delete("/:id/:semester", (req,res) =>{
     const classId= req.params.id
-    const semnumb = req.body.semnumb
-    console.log("semnumb: ",semnumb)
-    console.log("typeof: ", typeof(semnumb))
+    const semnumb = req.params.semester
+    // console.log("semnumb: ",semnumb)
+    // console.log("typeof: ", typeof(semnumb))
 
     function removeClassfromUser(usr, clas, numb){
         // console.log("got here")
         console.log("usr.classes: ",usr.classes)
         // console.log(Array.isArray(usr.classes))
         let copy = usr.classes.filter((clat) =>{
-            console.log(clat.class, clas, clat.semester, parseInt(numb))
-            console.log(((clat.class != clas) ,(clat.semester != numb)))
-            return (((clat.class != clas) ,(clat.semester != numb)))
+            console.log(clat)
+            console.log((clat.class!= clas), (clat.semester != parseInt(numb)))
+            // console.log(((clat.class != clas) ,(clat.semester != numb)))
+            return (((clat.class != clas) || (clat.semester != numb)))
         })
-        console.log("filtered user: ", copy)
         return copy
     }
     User.find({})
@@ -61,13 +61,47 @@ router.delete("/:id", (req,res) =>{
                 user.classes = removeClassfromUser(user, classId, semnumb)
                 user.save()
                 console.log("SAVED USER: ", user)
-                
+                res.redirect('/schedule')
             })
         })
         .catch(err=>{
             console.log("err removing class from users")
         })
-    res.redirect('/schedule')
+    
 })
+
+//=============================
+//Edit a class semester
+//=============================
+router.get("/:id/:semester", (req,res) =>{
+    const userId = req.session.userId
+    const ID = req.params.id
+    const semnumb = parseInt(req.params.semester)
+    User.findById(userId)
+        .then(fuser =>{
+            let userclasses = fuser.classes
+            let classobj
+            let class_to_edit = userclasses.filter((clat) =>{
+                return (((clat.class == ID) && (clat.semester == semnumb)))
+            })[0]
+            Class.findById(class_to_edit.class)
+            .then(here=>{
+                //console.log(here)
+                classobj = here
+                res.render('schedule/edit', {class: classobj, semnumb,
+                    session: req.session})
+            })
+            .catch(err=>{
+                "err finding class for class edit: ", err
+            })
+            
+
+        })
+        .catch(err=>{
+            console.log("error finding user for class edit: ", err)
+        })
+
+})
+
 
 module.exports = router

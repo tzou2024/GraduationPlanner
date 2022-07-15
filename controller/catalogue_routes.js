@@ -231,12 +231,13 @@ router.put('/search', (req,res) =>{
         ob["semester"] = parseInt(semester)
         user.classes.push(ob)
         console.log(user)
-        return user.save()
+        user.save()
+        res.redirect('/catalogue/search')
     })
     .catch(error=>{
         console.log("Error adding class to user: ", error)
     })
-    res.redirect('/catalogue/search')
+    
     
 })
 
