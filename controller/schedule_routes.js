@@ -32,4 +32,38 @@ router.get('/', async function (req,res, next){
     })
 })
 
+//=============================
+//DELETE Route Delete Class
+//=============================
+router.delete("/:id", (req,res) =>{
+    const classId= req.params.id
+    
+
+    Class.findByIdAndRemove(classId)
+    .then(classf =>{
+
+        User.find({})
+        .then(userlist =>{
+            //console.log(userlist)
+            userlist.forEach((user) =>{
+                //console.log(user, user.classes, classId)
+                user.classes = removeClassfromUser(user, classId)
+                user.save()
+                console.log("SAVED USER: ", user)
+                
+            })
+        })
+        .catch(err=>{
+            console.log("err removing class from users")
+        })
+
+
+
+        res.redirect('/catalogue')
+    })
+    .catch(err =>{
+        res.json(err)
+    })
+})
+
 module.exports = router

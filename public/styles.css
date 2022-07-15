@@ -1,0 +1,7 @@
+form.hide-submit input[type="submit"] { display: none;}
+
+#search-icon {
+    fill:#000;
+  height: 40px;
+  width: 40px;
+}
