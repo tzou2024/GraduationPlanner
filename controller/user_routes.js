@@ -76,7 +76,7 @@ router.post('/login', async (req, res) =>{
                     req.session.loggedIn = true
                     req.session.userId = user._id
                     console.log(req.session)
-                    res.redirect('/catalogue')
+                    res.redirect('/schedule')
                 }
 
                 else {
