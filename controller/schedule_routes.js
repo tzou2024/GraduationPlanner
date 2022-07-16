@@ -100,8 +100,8 @@ router.get('/genreqs', (req,res) =>{
                         //console.log(key)
                         //console.log(classstruct[classInUsrClasses.semester - 1])
                         classstruct[classInUsrClasses.semester - 1][`${key}`] += value
-                        console.log("UPDATED TO ")
-                        console.log(classstruct[classInUsrClasses.semester - 1])
+                        // console.log("UPDATED TO ")
+                        // console.log(classstruct[classInUsrClasses.semester - 1])
 
                       }
                     return classstruct
@@ -109,7 +109,52 @@ router.get('/genreqs', (req,res) =>{
             })
 
             Promise.all(promises).then(function(results){
-                res.json(results.slice(-1)[0])
+                //res.json(results.slice(-1)[0])
+
+                // required: 
+                //     Engineering: 46
+                //     Math: 10
+                //     Math and Science: 30
+                //     Ahs: 12
+                //     AHSE:28
+                
+
+                let orderedFinal = []
+                let updatedclassstruct = results.slice(-1)[0]
+                updatedclassstruct.forEach(semester =>{
+                    let objectOrder = {
+                        'ENGR': null,
+                        'MTH': null,
+                        'MTH_and_SCI': null,
+                        'AHS': null,
+                        "AHSE": null,
+                        'misc': null,
+                        'total': null
+                    }
+
+                    semester.total = Object.values(semester).reduce((a,b) => a + b, 0)
+                    semester['AHSE'] = semester['AHS'] + semester['E']
+                    semester['MTH_and_SCI'] = semester['MTH'] + semester['SCI']
+                    semester[`misc`] = semester['GENERAL'] + semester['NON_DEGREE'] + semester['SUST']
+                    
+                    let deleteList =['SCI', 'E', 'GENERAL','NON_DEGREE','SUST']
+                    deleteList.forEach(ell=>{
+                        delete semester[ell]
+                    })
+
+                    let orderedSemester = Object.assign(objectOrder, semester)
+                    // console.log("ORDEREDSEMESTER", orderedSemester)
+                    orderedFinal.push(orderedSemester)
+                    // console.log("pushed")
+                    // console.log(orderedFinal)
+                    
+
+                })
+                console.log("orderedFinal: ", orderedFinal)
+                res.json(orderedFinal)
+
+                
+                
             })
 
 
