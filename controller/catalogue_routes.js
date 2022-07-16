@@ -61,7 +61,7 @@ router.delete("/:id", (req,res) =>{
 //=============================
 router.get("/:id/edit", (req,res) =>{
     const classId= req.params.id
-    const catoptions = ["ENGR", "MTH", "SCI", "AHS", "E!", "GENERAL", "NON-DEGREE", "SUST"]
+    const catoptions = ["ENGR", "MTH", "SCI", "AHS", "E","GENERAL", "NON_DEGREE", "SUST"]
     let fulloptions = classSchema.obj.fulfills.enum
 
     Class.findById(classId)
@@ -112,7 +112,7 @@ router.get('/new', (req, res) =>{
     // console.log(req.session)
     // let session = req.session
     //console.log(classSchema)
-    const catoptions = ["","ENGR", "MTH", "SCI", "AHS", "E!", "GENERAL", "NON-DEGREE", "SUST"]
+    const catoptions = ["","ENGR", "MTH", "SCI", "AHS", "E","GENERAL", "NON_DEGREE", "SUST"]
     let fulloptions = classSchema.obj.fulfills.enum
     fulloptions.unshift('')
     res.render('catalogue/new', {session: req.session, catoptions, fulloptions})
@@ -230,6 +230,7 @@ router.put('/search', (req,res) =>{
         ob["class"] = classname
         ob["semester"] = parseInt(semester)
         user.classes.push(ob)
+        user.markModified()
         console.log(user)
         user.save()
         res.redirect('/catalogue/search')

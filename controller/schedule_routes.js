@@ -5,12 +5,12 @@ const router = express.Router()
 const classSchema = Class.schema
 
 router.get('/', (req,res) => {
-    console.log("got to schedule")
+    // console.log("got to schedule")
     let userId = req.session.userId
 
     User.findById(userId)
     .then( (usr)=>{
-        console.log("USR IN SCHEDULE", usr)
+        // console.log("USR IN SCHEDULE", usr)
         let classList = usr.classes
         let classstruct = []
         for(let i=1;i<=8;i++){
@@ -19,7 +19,7 @@ router.get('/', (req,res) => {
                 if(cls.semester == i){
                 Class.findById(cls.class)
                 .then(res=>{
-                    console.log(i, res)
+                    // console.log(i, res)
                     semesterstruct.push(res)})}
             })
             classstruct.push(semesterstruct)
@@ -71,6 +71,82 @@ router.delete("/:id/:semester", (req,res) =>{
         })
     
 })
+
+//=============================
+//GET General Reqs
+//=============================
+router.get('/genreqs', (req,res) =>{
+    console.log("ROUTE FOUND")
+    const userId = req.session.userId
+    const catoptions = ["ENGR", "MTH", "SCI", "AHS", "E","GENERAL", "NON_DEGREE", "SUST"]
+    
+    User.findById(userId)
+        .then((fuser) =>{
+            const usrclasses = fuser.classes
+            let classstruct = []
+            //for each semester
+            for(let i = 1;i<=8;i++){
+                // //make an inital object with each category
+                let catOptObj = {}
+                catoptions.forEach(category =>{
+                catOptObj[`${category}`] = 0
+                })
+                classstruct.push(catOptObj)
+            }
+            //THIS RIGHT HERE IS A DOOSIE
+            let promises = fuser.classes.map(function(classInUsrClasses){
+                return Class.findById(classInUsrClasses.class).then(function(fclass){
+                    for (const [key, value] of Object.entries(fclass.credit_and_category)) {
+                        //console.log(key)
+                        //console.log(classstruct[classInUsrClasses.semester - 1])
+                        classstruct[classInUsrClasses.semester - 1][`${key}`] += value
+                        console.log("UPDATED TO ")
+                        console.log(classstruct[classInUsrClasses.semester - 1])
+
+                      }
+                    return classstruct
+                })
+            })
+
+            Promise.all(promises).then(function(results){
+                res.json(results.slice(-1)[0])
+            })
+
+
+
+
+
+
+            // // console.log("Classstruct: ",classstruct)
+            // fuser.classes.map(classInUsrClasses =>{
+            //     //console.log("classInUsrClasses ",classInUsrClasses)
+            //     Class.findById(classInUsrClasses.class)
+            //     .then(fclass=>{
+            //         //console.log("fclass: ", fclass)
+            //         for (const [key, value] of Object.entries(fclass.credit_and_category)) {
+            //             //console.log(key)
+            //             //console.log(classstruct[classInUsrClasses.semester - 1])
+            //             classstruct[classInUsrClasses.semester - 1][`${key}`] += value
+            //             console.log("UPDATED TO ")
+            //             console.log(classstruct[classInUsrClasses.semester - 1])
+
+            //           }
+            //           //console.log("[classInUsrClasses.semester - 1]", [classInUsrClasses.semester - 1])
+            //     }
+            //     ).then(thening =>{
+            //         console.log("one iteration")
+            //         return true
+            //     }
+            //    )
+
+            // })
+        })
+        // .then(classstruct =>{
+        //     console.log(classstruct)
+        //     res.redirect('/schedule')
+        // })
+})
+
 
 //=============================
 //GET class semester
@@ -151,9 +227,6 @@ router.put("/:id/:semester", (req,res) =>{
         
 
 })
-
-
-
 
 
 
