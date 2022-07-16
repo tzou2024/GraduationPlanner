@@ -107,16 +107,19 @@ router.get('/genreqs', (req,res) =>{
                     return classstruct
                 })
             })
+            let cumTotal = {
+                'ENGR': 0,
+                'MTH': 0,
+                'MTH_and_SCI': 0,
+                'AHS': 0,
+                "AHSE": 0,
+                'misc': 0,
+                'total': 0
+            }
+            let remaining = {...cumTotal}
 
             Promise.all(promises).then(function(results){
-                //res.json(results.slice(-1)[0])
 
-                // required: 
-                //     Engineering: 46
-                //     Math: 10
-                //     Math and Science: 30
-                //     Ahs: 12
-                //     AHSE:28
                 
 
                 let orderedFinal = []
@@ -145,12 +148,44 @@ router.get('/genreqs', (req,res) =>{
                     let orderedSemester = Object.assign(objectOrder, semester)
                     // console.log("ORDEREDSEMESTER", orderedSemester)
                     orderedFinal.push(orderedSemester)
+
+                    for (const property in orderedSemester) {
+                        cumTotal[`${property}`]+=orderedSemester[`${property}`]
+                      }
                     // console.log("pushed")
                     // console.log(orderedFinal)
                     
 
                 })
                 console.log("orderedFinal: ", orderedFinal)
+
+                                //res.json(results.slice(-1)[0])
+
+                // required: 
+                //      
+                //     Engineering: 46
+                //     Math: 10
+                //     Math and Science: 30
+                //     Ahs: 12
+                //     AHSE:28
+                //     misc: 0
+                //     total: 120
+                let finalRequired = {
+                    'ENGR': 46,
+                    'MTH': 10,
+                    'MTH_and_SCI': 30,
+                    'AHS': 12,
+                    'AHSE': 28,
+                    'misc': 0,
+                    'total': 120
+                }
+                orderedFinal.push(cumTotal)
+                
+                for (const property in cumTotal) {
+                    remaining[`${property}`] = finalRequired[`${property}`] - cumTotal[`${property}`]
+                  }
+                orderedFinal.push(remaining)
+                orderedFinal.push(finalRequired)
                 res.json(orderedFinal)
 
                 
