@@ -42,7 +42,7 @@ router.delete("/:id/:semester", (req,res) =>{
     const semnumb = req.params.semester
     // console.log("semnumb: ",semnumb)
     // console.log("typeof: ", typeof(semnumb))
-    let deletedOneFlag = false
+    const deletedOneFlag = false
 
     function removeClassfromUser(usr, clas, numb){
         // console.log("got here")
@@ -52,23 +52,8 @@ router.delete("/:id/:semester", (req,res) =>{
             console.log(clat)
             console.log((clat.class!= clas), (clat.semester != parseInt(numb)))
             // console.log(((clat.class != clas) ,(clat.semester != numb)))
-            let finalDecision = false
-            console.log("pre final decision: ", finalDecision)
-            if(((clat.class != clas) || (clat.semester != numb))){
-                finalDecision = true
-            }
-            else{
-                if(!deletedOneFlag){
-                    finalDecision = true
-                    deletedOneFlag = true
-                }
-                else{
-                    finalDecision = false
-                }
-            }
-            console.log("FinalDecision: ",finalDecision)
-
-            return finalDecision
+            
+            return (((clat.class != clas) || (clat.semester != numb)))
         })
         return copy
     }
