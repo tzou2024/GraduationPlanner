@@ -122,11 +122,21 @@ router.get('/genreqs', (req,res) =>{
             let remaining = {...cumTotal}
 
             Promise.all(promises).then(function(results){
-
-                
-
                 let orderedFinal = []
+                let resultReplace= []
+                //for each semester
+                for(let i = 1;i<=8;i++){
+                    // //make an inital object with each category
+                    let catOptObj = {}
+                    catoptions.forEach(category =>{
+                    catOptObj[`${category}`] = 0
+                    })
+                    resultReplace.push(catOptObj)
+                }
                 let updatedclassstruct = results.slice(-1)[0]
+                if(!updatedclassstruct){
+                    updatedclassstruct = resultReplace
+                }
                 updatedclassstruct.forEach(semester =>{
                     let objectOrder = {
                         'ENGR': null,
