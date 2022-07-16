@@ -1,0 +1,45 @@
+{% layout 'layout.liquid' %}
+
+{% block content %}
+<div class="container centered edges mt-5">
+    <h1 class="align-center heading-large mb-5">Credit Breakdown</h1>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <th></th>
+            {%for i in catKeys%}
+            <th class="align-center"> {{i | split: "_" | join: " " |split: " and "|join: "+"}} </th>
+            {% endfor %}
+        </thead>
+    <tbody>
+        {% for sem in orderedFinal %}
+            {% assign semcount = forloop.index%}
+            <tr class="align-center">
+                {% if semcount < 9 %}
+                    <td class="align-center"> <b>Sem {{semcount}}: </b></td>
+                    {% for cat in catKeys%}
+                        <td class="align-center"> {{sem[cat]}} </td>
+                    {% endfor %}
+                {% endif%}
+                {% if semcount == 9 %}
+                    <td class="align-center" style="background-color:#dfd"><b> Cumulative: </b></td>
+                    {% for cat in catKeys%}
+                        <td class="align-center" style="background-color:#dfd"> <b>{{sem[cat]}}</b> </td>
+                    {% endfor %}
+                {% endif%}
+                {% if semcount == 10 %}
+                    <td class="align-center" style="background-color:#ddf"> <b>Required: </b></td>
+                    {% for cat in catKeys%}
+                        <td class="align-center" style="background-color:#ddf"> <b>{{sem[cat]}}</b> </td>
+                    {% endfor %}
+                {% endif%}
+                {% if semcount == 11 %}
+                    <td class="align-center" style="background-color:#fdd"> <b>Remaining:</b> </td>
+                    {% for cat in catKeys%}
+                        <td class="align-center" style="background-color:#fdd"> <b>{{sem[cat]}}</b> </td>
+                    {% endfor %}
+                {% endif%}
+            </tr>
+        {% endfor %}
+    </tbody>
+</div>
+{% endblock %}

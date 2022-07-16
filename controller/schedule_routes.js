@@ -42,6 +42,7 @@ router.delete("/:id/:semester", (req,res) =>{
     const semnumb = req.params.semester
     // console.log("semnumb: ",semnumb)
     // console.log("typeof: ", typeof(semnumb))
+    let deletedOneFlag = false
 
     function removeClassfromUser(usr, clas, numb){
         // console.log("got here")
@@ -51,7 +52,23 @@ router.delete("/:id/:semester", (req,res) =>{
             console.log(clat)
             console.log((clat.class!= clas), (clat.semester != parseInt(numb)))
             // console.log(((clat.class != clas) ,(clat.semester != numb)))
-            return (((clat.class != clas) || (clat.semester != numb)))
+            let finalDecision = false
+            console.log("pre final decision: ", finalDecision)
+            if(((clat.class != clas) || (clat.semester != numb))){
+                finalDecision = true
+            }
+            else{
+                if(!deletedOneFlag){
+                    finalDecision = true
+                    deletedOneFlag = true
+                }
+                else{
+                    finalDecision = false
+                }
+            }
+            console.log("FinalDecision: ",finalDecision)
+
+            return finalDecision
         })
         return copy
     }
@@ -61,6 +78,7 @@ router.delete("/:id/:semester", (req,res) =>{
             userlist.forEach((user) =>{
                 //console.log(user, user.classes, classId)
                 user.classes = removeClassfromUser(user, classId, semnumb)
+                delete user.semnumbtochangeto
                 user.save()
                 console.log("SAVED USER: ", user)
                 res.redirect('/schedule')
@@ -113,7 +131,7 @@ router.get('/genreqs', (req,res) =>{
                 'MTH_and_SCI': 0,
                 'AHS': 0,
                 "AHSE": 0,
-                'misc': 0,
+                'other': 0,
                 'total': 0
             }
             let remaining = {...cumTotal}
@@ -131,14 +149,14 @@ router.get('/genreqs', (req,res) =>{
                         'MTH_and_SCI': null,
                         'AHS': null,
                         "AHSE": null,
-                        'misc': null,
+                        'other': null,
                         'total': null
                     }
 
                     semester.total = Object.values(semester).reduce((a,b) => a + b, 0)
                     semester['AHSE'] = semester['AHS'] + semester['E']
                     semester['MTH_and_SCI'] = semester['MTH'] + semester['SCI']
-                    semester[`misc`] = semester['GENERAL'] + semester['NON_DEGREE'] + semester['SUST']
+                    semester[`other`] = semester['GENERAL'] + semester['NON_DEGREE'] + semester['SUST']
                     
                     let deleteList =['SCI', 'E', 'GENERAL','NON_DEGREE','SUST']
                     deleteList.forEach(ell=>{
@@ -168,7 +186,7 @@ router.get('/genreqs', (req,res) =>{
                 //     Math and Science: 30
                 //     Ahs: 12
                 //     AHSE:28
-                //     misc: 0
+                //     other: 0
                 //     total: 120
                 let finalRequired = {
                     'ENGR': 46,
@@ -176,7 +194,7 @@ router.get('/genreqs', (req,res) =>{
                     'MTH_and_SCI': 30,
                     'AHS': 12,
                     'AHSE': 28,
-                    'misc': 0,
+                    'other': 0,
                     'total': 120
                 }
                 orderedFinal.push(cumTotal)
@@ -184,9 +202,10 @@ router.get('/genreqs', (req,res) =>{
                 for (const property in cumTotal) {
                     remaining[`${property}`] = finalRequired[`${property}`] - cumTotal[`${property}`]
                   }
-                orderedFinal.push(remaining)
+                
                 orderedFinal.push(finalRequired)
-                res.json(orderedFinal)
+                orderedFinal.push(remaining)
+                res.render('schedule/genreqs', {session: req.session, orderedFinal, catKeys: Object.keys(finalRequired)})
 
                 
                 
@@ -291,6 +310,7 @@ router.put("/:id/:semester", (req,res) =>{
             fuser.classes = newmap
             fuser.markModified('classes')
             console.log("NEW FUSER>CLASSES: ", fuser.classes)
+            delete fuser.semnumbtochangeto
             return fuser.save()
                 .then(savedDoc =>{
                     console.log(fuser, savedDoc,"savedDoc === fuser ",savedDoc === fuser)
