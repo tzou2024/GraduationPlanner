@@ -1,16 +1,49 @@
-//use an already eted mongoose
-const mongoose = require('./connection')
+// //use an already eted mongoose
+// const mongoose = require('./connection')
 
-//get keys out of mongoose
-const {Schema, model} = mongoose
+// //get keys out of mongoose
+// const {Schema, model} = mongoose
 
-//make a schema
-const majorSchema = new Schema({
+// //['mandatory','AHSFound','probStat','AHSConcentration', 'ChemMatSci', 'bioFound', 'desDepth', 'majorReq', 'majorElective', 'capstone', 'additional']
 
-    },{
-        strict: false,
-        timestamps: true
-    })
+// //make a schema
+// const majorSchema = new Schema({
+//     name: {
+//         type: String
+//     },
+//     mandatory: {
+//         type: Object,
+//         defaut: {
+//             options: ["QEA1", "QEA2", "QEA3", "OFYI", "DesNat", "ModSim", "ISIM", "P and M", "CD", "PIE"],
+//             needed: this.options.length
+//         }
+//     },
+//     probStat: {
+//         type: Object,
+//         default: {
+//             needed: 1,
+//             options: ["ProbAndStat", "Data Science", "Bayesian Stats", "Neurotech", "AstroStats"]
+//         }
+//     },
+//     AHSFound: {
+//         type: Object,
+//         default: {
+//             needed: 1,
+//             options: ["Identity", "Demand"]
+//         }
+//     },
+//     majorReq: {
+//         type: Object
+//     },
+//     majorElective: {
+//         type: Object
+//     }
+
     
-const Class = model('Class', classSchema)
-module.exports = Class
+//     },{
+//         strict: false,
+//         timestamps: true
+//     })
+    
+// const Major = model('Major', majorSchema)
+// module.exports = Major

@@ -1,0 +1,1 @@
+const Major = require('../models/major')

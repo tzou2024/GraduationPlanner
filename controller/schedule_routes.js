@@ -1,9 +1,9 @@
 const express = require('express')
 const Class = require('../models/class')
 const User = require('../models/user')
+const Major = require('../models/major')
 const router = express.Router()
 const classSchema = Class.schema
-const _ = require('lodash')
 
 router.get('/', (req,res) => {
     // console.log("got to schedule")

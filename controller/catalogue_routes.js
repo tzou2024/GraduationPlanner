@@ -1,6 +1,8 @@
 const express = require('express')
 const Class = require('../models/class')
 const User = require('../models/user')
+const Major = require('../models/major')
+const _ = require('lodash')
 const router = express.Router()
 const classSchema = Class.schema
 
@@ -97,7 +99,9 @@ router.get('/', (req, res) =>{
             classesclone.forEach(ell=>{
                 ell.credit_and_category = objToString(ell.credit_and_category)
             })
-            res.render('catalogue/index', {session: session, classes: classesclone})
+            let length = _.range(0,classesclone.length)
+            console.log("LENGTH: ", length)
+            res.render('catalogue/index', {session: session,length, classes: classesclone})
         })
         .catch(err=>{
             res.json(err)

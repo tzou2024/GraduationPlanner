@@ -39,7 +39,7 @@ module.exports = [
         }
     },
     {
-        name: "PandM",
+        name: "P and M",
         credit_and_category: {
             "E": 4
         }
@@ -70,6 +70,6 @@ module.exports = [
         credit_and_category: {
             "ENGR": 4
         }
-    },
+    }
 
  ]

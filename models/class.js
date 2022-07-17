@@ -17,7 +17,7 @@ const classSchema = new Schema({
     },
     fulfills: {
         type: String,
-        enum: ['General Req','Probstat','AHS Concentation', 'Chem/MatSci', 'Bio', 'Design Depth', 'Major Req', 'Major Elective', 'Capstone', 'Additional Course']
+        enum: ['mandatory','AHSFound','probStat','AHSConcentration', 'ChemMatSci', 'bioFound', 'desDepth', 'majorReq', 'majorElective', 'capstone', 'additional']
     }
     },{
         strict: false,
