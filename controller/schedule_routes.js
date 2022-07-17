@@ -2,6 +2,7 @@ const express = require('express')
 const Class = require('../models/class')
 const User = require('../models/user')
 const Major = require('../models/major')
+const _ = require('lodash')
 const router = express.Router()
 const classSchema = Class.schema
 
@@ -53,9 +54,10 @@ router.delete("/:id/:semester", (req,res) =>{
             class: clas,
             semester: parseInt(numb)
         }
-        console.log(objectToFind)
+        console.log("objectobjectToFind", objectToFind)
 
         let idx = usr.classes.findIndex(p=>_.isEqual(p, objectToFind))
+
         console.log(idx)
 
         if(idx > -1){
@@ -72,6 +74,7 @@ router.delete("/:id/:semester", (req,res) =>{
             
         //     return (((clat.class != clas) || (clat.semester != numb)))
         // })
+
         return usr.classes
     }
     User.find({})

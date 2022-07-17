@@ -100,7 +100,7 @@ router.get('/', (req, res) =>{
                 ell.credit_and_category = objToString(ell.credit_and_category)
             })
             let length = _.range(0,classesclone.length)
-            console.log("LENGTH: ", length)
+            //console.log("LENGTH: ", length)
             res.render('catalogue/index', {session: session,length, classes: classesclone})
         })
         .catch(err=>{
@@ -236,8 +236,11 @@ router.put('/search', (req,res) =>{
         user.classes.push(ob)
         user.markModified()
         console.log(user)
-        user.save()
-        setTimeout(() => res.redirect('/catalogue/search'), 200)
+        return user.save()
+
+    })
+    .then(done =>{
+        setTimeout(() => res.redirect('/schedule'), 200)
     })
     .catch(error=>{
         console.log("Error adding class to user: ", error)
