@@ -17,7 +17,7 @@ const classSchema = new Schema({
     },
     fulfills: {
         type: String,
-        enum: ['Probstat','AHS Concentation', 'Chem/MatSci', 'Design Depth', 'Major Req', 'Major Elective', 'Capstone', 'Additional Course']
+        enum: ['General Req','Probstat','AHS Concentation', 'Chem/MatSci', 'Bio', 'Design Depth', 'Major Req', 'Major Elective', 'Capstone', 'Additional Course']
     }
     },{
         strict: false,
@@ -26,3 +26,38 @@ const classSchema = new Schema({
     
 const Class = model('Class', classSchema)
 module.exports = Class
+
+/*
+Graduation Requirements:
+    Gen Course Reqs:
+        Modsim
+        QEA123
+    Probstat:
+        Oneof:
+            Probstat
+            Data Science
+            Computational Bayes
+            Neurotech
+            AstroStats
+    Sci Foundation
+        Bio Foundation:
+            OneOf
+                ...
+        Chem Foundation:
+            OneOf
+    Physics:
+        QEA123
+    ENGR:
+        ISIM,PIE
+    Capstone:
+        SCOPE,ADE
+    Design:
+        DesNat
+        CD
+    Design Depth:
+        OneOf...
+    AHSFoundation:
+        OneOf
+    EFoundation:
+        PandM
+*/
