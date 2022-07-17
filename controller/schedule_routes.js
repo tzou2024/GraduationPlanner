@@ -3,6 +3,7 @@ const Class = require('../models/class')
 const User = require('../models/user')
 const router = express.Router()
 const classSchema = Class.schema
+const _ = require('lodash')
 
 router.get('/', (req,res) => {
     // console.log("got to schedule")
@@ -47,15 +48,31 @@ router.delete("/:id/:semester", (req,res) =>{
     function removeClassfromUser(usr, clas, numb){
         // console.log("got here")
         console.log("usr.classes: ",usr.classes)
+
+        let objectToFind = {
+            class: clas,
+            semester: parseInt(numb)
+        }
+        console.log(objectToFind)
+
+        let idx = usr.classes.findIndex(p=>_.isEqual(p, objectToFind))
+        console.log(idx)
+
+        if(idx > -1){
+            usr.classes.splice(idx,1)
+        }
+
+        console.log("spliced")
+        
         // console.log(Array.isArray(usr.classes))
-        let copy = usr.classes.filter((clat) =>{
-            console.log(clat)
-            console.log((clat.class!= clas), (clat.semester != parseInt(numb)))
-            // console.log(((clat.class != clas) ,(clat.semester != numb)))
+        // let copy = usr.classes.filter((clat) =>{
+        //     console.log(clat)
+        //     console.log((clat.class!= clas), (clat.semester != parseInt(numb)))
+        //     // console.log(((clat.class != clas) ,(clat.semester != numb)))
             
-            return (((clat.class != clas) || (clat.semester != numb)))
-        })
-        return copy
+        //     return (((clat.class != clas) || (clat.semester != numb)))
+        // })
+        return usr.classes
     }
     User.find({})
         .then(userlist =>{
@@ -63,7 +80,9 @@ router.delete("/:id/:semester", (req,res) =>{
             userlist.forEach((user) =>{
                 //console.log(user, user.classes, classId)
                 user.classes = removeClassfromUser(user, classId, semnumb)
-                delete user.semnumbtochangeto
+                delete user[`semnumbtochangeto`]
+                console.log("semnumbtochangeto: ", user.semnumbtochangeto)
+                user.markModified()
                 user.save()
                 console.log("SAVED USER: ", user)
                 res.redirect('/schedule')

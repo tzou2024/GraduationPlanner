@@ -8,7 +8,7 @@
     "start": "nodemon servier.js",
     "seed": "node models/seed.js",
     "deleteUsers": "node models/deleteUsers.js",
-    "troubleshoot" : "npm run seed npm run deleteUsers"
+    "troubleshoot": "npm run seed npm run deleteUsers"
   },
   "repository": {
     "type": "git",
@@ -28,6 +28,7 @@
     "express": "^4.18.1",
     "express-session": "^1.17.3",
     "liquid-express-views": "^1.0.8",
+    "lodash": "^4.17.21",
     "method-override": "^3.0.0",
     "mongoose": "^6.4.4",
     "morgan": "^1.10.0",

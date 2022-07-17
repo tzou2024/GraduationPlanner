@@ -233,7 +233,7 @@ router.put('/search', (req,res) =>{
         user.markModified()
         console.log(user)
         user.save()
-        res.redirect('/catalogue/search')
+        setTimeout(() => res.redirect('/catalogue/search'), 200)
     })
     .catch(error=>{
         console.log("Error adding class to user: ", error)
