@@ -1,0 +1,25 @@
+{% layout 'layout.liquid' %}
+
+{% block content %}
+<div class="container centered edges mt-5 mb-5">
+    <h1 class="align-center heading-large mb-5">Major Breakdown</h1>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <th class="align-center"><b>Requirement</b></th>
+            <th class="align-center"><b>Fulfilled:</b></th>
+        </thead>
+    <tbody>
+        {% for full in col1 %}
+            {% assign i = forloop.index0%}
+            <tr>
+            <td class="align-center"><b>{{full}}</b></td>
+            <td class="align-center">
+                {{col2[i] | newline_to_br }}</td>
+            </tr>
+           
+        {% endfor %}
+    </tbody>
+</div>
+
+
+{% endblock %}

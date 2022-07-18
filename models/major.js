@@ -38,6 +38,13 @@ const majorSchema = new Schema({
     },
     majorElective: {
         type: Object
+    },
+    additional: {
+        type: Object,
+        default: {
+            needed: 0,
+            options: []
+        }
     }
 
     

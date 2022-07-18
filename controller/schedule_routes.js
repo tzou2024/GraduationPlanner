@@ -178,24 +178,12 @@ router.get('/genreqs', (req,res) =>{
                     for (const property in orderedSemester) {
                         cumTotal[`${property}`]+=orderedSemester[`${property}`]
                       }
-                    // console.log("pushed")
-                    // console.log(orderedFinal)
+
                     
 
                 })
                 console.log("orderedFinal: ", orderedFinal)
 
-                                //res.json(results.slice(-1)[0])
-
-                // required: 
-                //      
-                //     Engineering: 46
-                //     Math: 10
-                //     Math and Science: 30
-                //     Ahs: 12
-                //     AHSE:28
-                //     other: 0
-                //     total: 120
                 let finalRequired = {
                     'ENGR': 46,
                     'MTH': 10,
@@ -208,7 +196,7 @@ router.get('/genreqs', (req,res) =>{
                 orderedFinal.push(cumTotal)
                 
                 for (const property in cumTotal) {
-                    remaining[`${property}`] = finalRequired[`${property}`] - cumTotal[`${property}`]
+                    remaining[`${property}`] = (finalRequired[`${property}`] - cumTotal[`${property}`]) < 0 ? 0 : finalRequired[`${property}`] - cumTotal[`${property}`]
                   }
                 
                 orderedFinal.push(finalRequired)
@@ -219,39 +207,8 @@ router.get('/genreqs', (req,res) =>{
                 
             })
 
-
-
-
-
-
-            // // console.log("Classstruct: ",classstruct)
-            // fuser.classes.map(classInUsrClasses =>{
-            //     //console.log("classInUsrClasses ",classInUsrClasses)
-            //     Class.findById(classInUsrClasses.class)
-            //     .then(fclass=>{
-            //         //console.log("fclass: ", fclass)
-            //         for (const [key, value] of Object.entries(fclass.credit_and_category)) {
-            //             //console.log(key)
-            //             //console.log(classstruct[classInUsrClasses.semester - 1])
-            //             classstruct[classInUsrClasses.semester - 1][`${key}`] += value
-            //             console.log("UPDATED TO ")
-            //             console.log(classstruct[classInUsrClasses.semester - 1])
-
-            //           }
-            //           //console.log("[classInUsrClasses.semester - 1]", [classInUsrClasses.semester - 1])
-            //     }
-            //     ).then(thening =>{
-            //         console.log("one iteration")
-            //         return true
-            //     }
-            //    )
-
-            // })
         })
-        // .then(classstruct =>{
-        //     console.log(classstruct)
-        //     res.redirect('/schedule')
-        // })
+
 })
 
 
