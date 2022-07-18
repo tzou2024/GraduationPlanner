@@ -2,14 +2,14 @@ const mongoose =require('./connection')
 const Class = require('./class')
 const Major = require('./major')
 const db = mongoose.connection
-const startClasses = require('./seedcatalogue.js')
+const startMajors = require('./seedmajorsdata.js')
 
 db.on('open', () =>{
     Major.deleteMany({})
     .then((deletedMajors) =>{
         console.log("Deleted Major")
 
-        Class.create(startClasses)
+        Major.create(startMajors)
             .then(data =>{
                 console.log("SEEDED")
                 db.close()

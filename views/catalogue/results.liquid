@@ -5,17 +5,18 @@
     <h1 class="align-center heading-large mb-5">Search Results</h1>
     <div class="grid">
         {% for cls in foundClasses %}
-            <form class="mt-5" action="/catalogue/search?_method=PUT" method="POST">
-            <div class="column column-3 card p-5 shadow-150 bg-light radius-base">
-                <div class="card-head align-center">
+            
+            <div class="column column-3 card shadow-150 bg-light radius-base">
+                <form class="mt-3" action="/catalogue/search?_method=PUT" method="POST">
+                <div class="card-head align-center"  >
                     <h2 type="input" name="classname" value="{{cls.name}}"class="form-item heading-medium">
                         {{cls.name}}
                     </h2>
                     <input type="hidden" name="classname" value="{{cls._id}}">
                 </div>
-                <div class="card-body align-center mt-3">
+                <div class="card-body align-center mt-3 mb-3"  >
                     <div>
-                    <p class="text-large">{{cls.credit_and_category |split: "," | join: "\n"}}</p>
+                    <p class="text-large"><b>{{cls.credit_and_category |split: "," | join: "\n"}}</b></p>
                     </div>
                     <div>
                     
@@ -24,11 +25,12 @@
                     </div>
                     <input type="submit" class="button button-primary" value="add class">
                 </div>
-            </div>
             </form>
+            </div>
+            
         {% endfor%}
     </div>
-    <div class="mt-3 align-center">
+    <div class="mt-3 mb-3 align-center">
         <a class="" href="/catalogue">Back to Catalogue</a>
     </div>
 </div>
