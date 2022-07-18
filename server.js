@@ -16,6 +16,8 @@ const catalogueRoutes = require('./controller/catalogue_routes')
 
 const scheduleRoutes = require('./controller/schedule_routes')
 
+const majorRoutes = require('./controller/major_routes')
+
 
 //=============================
 // Create our express application object
@@ -64,6 +66,8 @@ app.use('/catalogue', catalogueRoutes)
 app.use('/users', userRoutes)
 //use schedule pathing
 app.use('/schedule', scheduleRoutes)
+
+app.use('/major', majorRoutes)
 
 app.get('/', (req, res) => {
 	res.redirect('/users/login')

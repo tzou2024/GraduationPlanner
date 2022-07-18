@@ -129,9 +129,10 @@ router.get('/new', (req, res) =>{
         .then(userMajor =>{
             console.log(userMajor[0])
             fulloptions = Object.keys(userMajor[0]._doc)
-            fulloptions.shift()
-            fulloptions.shift()
-            fulloptions.pop()
+            let remover = ["_id", "name", "updatedAt", "createdAt", "__v"]
+            remover.forEach(ell =>{
+                _.remove(fulloptions, (number) => number == ell)
+            })
             fulloptions.unshift("")
             console.log("fulloptions", fulloptions)
             res.render('catalogue/new', {session: req.session, catoptions, fulloptions})
@@ -190,6 +191,7 @@ router.get('/search', (req, res) =>{
     //create route to search for classes
    
     let keys= Object.keys(classSchema.obj)
+    
     
      //TODO: add search for credit category
     keys = keys.filter(ell=>{
