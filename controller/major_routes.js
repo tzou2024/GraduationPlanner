@@ -99,12 +99,6 @@ router.get('/', (req,res) =>{
                             col2.push("❌")
                         }
                     })
-                    if(key == "additional"){
-                        value.has.forEach(ell=>{
-                            col1.push(key)
-                            col2.push(ell)
-                        })
-                    }
                 }
                 else{
                     for(let i = 0;i < value.needed;i++){
@@ -129,6 +123,12 @@ router.get('/', (req,res) =>{
                         
                     }
                 }
+            }
+            if(fulloptions.additional.has.length > 0){
+                fulloptions.additional.has.forEach(ell=>{
+                    col1.push("additional")
+                    col2.push(ell)
+                })
             }
             
             
