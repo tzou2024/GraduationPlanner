@@ -116,10 +116,31 @@ router.get('/new', (req, res) =>{
     // console.log(req.session)
     // let session = req.session
     //console.log(classSchema)
+    let fulloptions
+    let major
     const catoptions = ["","ENGR", "MTH", "SCI", "AHS", "E","GENERAL", "NON_DEGREE", "SUST"]
-    let fulloptions = classSchema.obj.fulfills.enum
-    fulloptions.unshift('')
-    res.render('catalogue/new', {session: req.session, catoptions, fulloptions})
+    User.findById(req.session.userId)
+    .then(fuser =>{
+        console.log("fuser.major",fuser.major)
+        let major = fuser.major
+        let query = {}
+        query["name"] = major 
+        Major.find(query)
+        .then(userMajor =>{
+            console.log(userMajor[0])
+            fulloptions = Object.keys(userMajor[0]._doc)
+            fulloptions.shift()
+            fulloptions.shift()
+            fulloptions.pop()
+            fulloptions.unshift("")
+            console.log("fulloptions", fulloptions)
+            res.render('catalogue/new', {session: req.session, catoptions, fulloptions})
+        })
+    })
+    
+    // let fulloptions = classSchema.obj.fulfills.enum
+    // fulloptions.unshift('')
+    
 })
 
 //=============================

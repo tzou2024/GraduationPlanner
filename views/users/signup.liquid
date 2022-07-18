@@ -32,7 +32,7 @@
                     <label>Major</label>
                     {% comment %} ["ME", "ECE", "EBio", "E:C", "E:D", "E:Robo", "E:Sust"] {% endcomment %}
                     <select class="input align-center" name="major">
-                       {% for i in userSchema.obj.major.enum %}
+                       {% for i in majorlist %}
                         <option value="{{i}}">{{i}}</option>
                        {% endfor %}
                     </select>

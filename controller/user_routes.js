@@ -2,7 +2,7 @@ const express = require('express')
 
 //importing fruit model to access database
 const User = require('../models/user')
-
+const Major = require('../models/major')
 const userSchema = User.schema
 //bcrypt is used to hash(encrypt) passwords
 const bcrypt = require('bcryptjs')
@@ -15,8 +15,17 @@ const router = express.Router()
 // GET Request Signup
 //=============================
 router.get('/signup', (req,res) =>{
-    console.log(userSchema.obj.major.enum)
-    res.render('users/signup', {userSchema})
+    // console.log(userSchema.obj.major.enum)
+    Major.find({})
+        .then(majors =>{
+            let majorlist = []
+            majors.forEach(major =>{
+                majorlist.push(major.name)
+            })
+            console.log(majorlist)
+            res.render('users/signup', {majorlist})
+        })
+    
 })
 
 
@@ -37,6 +46,7 @@ router.post('/signup', async (req,res) =>{
         //if created successfully, redirect tol ogin page
         .then(user =>{
             console.log("new user: ", user)
+            Major
             res.redirect('/users/login')
         })
         //if unsuccessful, send erre

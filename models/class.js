@@ -15,10 +15,10 @@ const classSchema = new Schema({
         type: String,
         default: "Olin"
     },
-    fulfills: {
-        type: String,
-        enum: ['mandatory','AHSFound','probStat','AHSConcentration', 'ChemMatSci', 'bioFound', 'desDepth', 'majorReq', 'majorElective', 'capstone', 'additional']
-    }
+    // fulfills: {
+    //     type: String,
+    //     enum: ['mandatory','AHSFound','probStat','AHSConcentration', 'ChemMatSci', 'bioFound', 'desDepth', 'majorReq', 'majorElective', 'capstone', 'additional']
+    // }
     },{
         strict: false,
         timestamps: true

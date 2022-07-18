@@ -13,7 +13,7 @@ const majorSchema = new Schema({
     },
     mandatory: {
         type: Object,
-        defaut: {
+        default: {
             needed: 10,
             options: ["QEA1", "QEA2", "QEA3", "OFYI", "DesNat", "ModSim", "ISIM", "P and M", "CD", "PIE"],
            
