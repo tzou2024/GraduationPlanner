@@ -58,7 +58,7 @@ router.delete("/:id/:semester", (req,res) =>{
     const semnumb = req.params.semester
     // console.log("semnumb: ",semnumb)
     // console.log("typeof: ", typeof(semnumb))
-    const deletedOneFlag = false
+    //includes functionality for  if class inputted multiple times, even in same semester
 
     function removeClassfromUser(usr, clas, numb){
         // console.log("got here")

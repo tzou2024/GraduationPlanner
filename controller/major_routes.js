@@ -6,7 +6,7 @@ const _ = require('lodash')
 const router = express.Router()
 const classSchema = Class.schema
 
-//custon middleware
+//custon middleware for sesion expiration
 router.use((req,res,next) =>{
 	if(!req.session.hasOwnProperty('loggedIn')){
 		res.redirect('/users/login')
@@ -95,6 +95,14 @@ router.get('/', (req,res) =>{
                 
             }
 
+            //====
+            //once crossreferenced, reorganize into big object that makes sense in my head
+            //there's definetely a better way to do this but this is where my mind went
+            //once organizated into object, split into collumns
+            //col1: if required class display, if x classes out of y category required,
+            //display category
+            //col2: if required class, completed or not, if cateogry, completed or show options for completion
+            //====
             
             let forkeys = []
             let forvalues = []
@@ -162,7 +170,7 @@ router.get('/', (req,res) =>{
             
             
             console.log(fulloptions)
-            console.log("col1", col1)
+            //console.log("col1", col1)
             res.render('major/index', {session: req.session, fulloptions, forkeys, forvalues, col1, col2})
         })
     })
