@@ -11,7 +11,7 @@
                 <form class="mt-3" action="/catalogue/search?_method=PUT" method="POST">
                 <div class="card-head align-center"  >
                     <h2 type="input" name="classname" value="{{cls.name}}"class="form-item heading-medium">
-                        {{cls.name}}
+                        <a  href="/catalogue/{{cls._id}}">{{cls.name}}</a>
                     </h2>
                     <input type="hidden" name="classname" value="{{cls._id}}">
                 </div>
@@ -32,7 +32,7 @@
         {% endfor%}
     </div>
     <div class="mt-3 mb-3 align-center">
-        <a class="" href="/catalogue">Back to Catalogue</a>
+        <a class="" href="/schedule">Back to My Schedule</a>
     </div>
 </div>
 {% endblock %}

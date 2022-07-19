@@ -207,6 +207,8 @@ router.post('/', (req,res) =>{
 //=============================
 router.get('/search', (req, res) =>{
 
+    
+
     //create route to search for classes
     //if time, search by fulfills
     let keys= Object.keys(classSchema.obj)
@@ -216,6 +218,8 @@ router.get('/search', (req, res) =>{
     keys = keys.filter(ell=>{
         return ell != "credit_and_category"
     })
+
+    keys.push("fulfills")
     // const index = keys.indexOf('credit_and_category')
     // if(index != -1){
     //     keys[index] = "credit category"
