@@ -6,11 +6,21 @@ const _ = require('lodash')
 const router = express.Router()
 const classSchema = Class.schema
 
-router.get('/', (req,res) => {
-    if(!req.session.hasOwnProperty('loggedIn')){
-        res.render('users.login')
+//custon middleware
+router.use((req,res,next) =>{
+	if(!req.session.hasOwnProperty('loggedIn')){
+		res.redirect('/users/login')
+	
+	}
+	else{
+		next()
+	}
 
-    }
+    //you HAVE to call next at the end of the middleware
+    
+})
+
+router.get('/', (req,res) => {
     // console.log("got to schedule")
     let userId = req.session.userId
 
@@ -105,10 +115,6 @@ router.delete("/:id/:semester", (req,res) =>{
 //GET General Reqs
 //=============================
 router.get('/genreqs', (req,res) =>{
-    if(!req.session.hasOwnProperty('loggedIn')){
-        res.render('users.login')
-
-    }
     console.log("ROUTE FOUND")
     const userId = req.session.userId
     const catoptions = ["ENGR", "MTH", "SCI", "AHS", "E","GENERAL", "NON_DEGREE", "SUST"]
@@ -224,10 +230,6 @@ router.get('/genreqs', (req,res) =>{
 //GET class semester
 //=============================
 router.get("/:id/:semester", (req,res) =>{
-    if(!req.session.hasOwnProperty('loggedIn')){
-        res.render('users.login')
-
-    }
     const userId = req.session.userId
     const ID = req.params.id
     const semnumb = parseInt(req.params.semester)

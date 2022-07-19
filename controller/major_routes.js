@@ -6,11 +6,21 @@ const _ = require('lodash')
 const router = express.Router()
 const classSchema = Class.schema
 
-router.get('/', (req,res) =>{
-    if(!req.session.hasOwnProperty('loggedIn')){
-        res.render('users.login')
+//custon middleware
+router.use((req,res,next) =>{
+	if(!req.session.hasOwnProperty('loggedIn')){
+		res.redirect('/users/login')
+	
+	}
+	else{
+		next()
+	}
 
-    }
+    //you HAVE to call next at the end of the middleware
+    
+})
+
+router.get('/', (req,res) =>{
     let userID = req.session.userId
     let usrClassList = []
 
