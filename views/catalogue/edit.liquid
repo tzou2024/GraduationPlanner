@@ -40,6 +40,7 @@
                 <div class="form-item centered align-center">
                     <label> fulfills </label>
                     <select class="input align-center" name="fulfills">
+                        <option value="{{class.fulfills}}">{{class.fulfills}}</option>
                         {% for j in fulloptions %}
                             <option value="{{j}}">{{j}}</option>
                         {% endfor %}

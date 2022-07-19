@@ -76,6 +76,7 @@ router.delete("/:id", (req,res) =>{
     })
 })
 
+
 //=============================
 //GET Route Edit Class
 //=============================
@@ -83,10 +84,23 @@ router.get("/:id/edit", (req,res) =>{
     const classId= req.params.id
     //have this in multiple places, should consolidate and export if time
     const catoptions = ["ENGR", "MTH", "SCI", "AHS", "E","GENERAL", "NON_DEGREE", "SUST"]
-    let fulloptions = classSchema.obj.fulfills.enum
+    User.findById(req.session.userId)
+    .then(fuser =>{
+        let major = fuser.major
+        let query = {}
+        query['name'] = major
+        Major.find(query)
+        .then(fmajor =>{
+            let fulloptionsobj = {...fmajor[0]._doc}
+            let remover = ["_id", "name", "updatedAt", "createdAt", "__v"]
+           remover.forEach(ell =>{
+               delete fulloptionsobj[`${ell}`]
+           })
+           let fulloptions = Object.keys(fulloptionsobj)
+           fulloptions.unshift("")
 
-    Class.findById(classId)
-        .then(classf =>{
+           Class.findById(classId)
+            .then(classf =>{
             
             
             const keys = Object.keys(classf.credit_and_category)
@@ -103,6 +117,12 @@ router.get("/:id/edit", (req,res) =>{
         .catch(err=>{
             res.json(err)
         })
+        }
+
+        )
+    })
+
+    
 
 })
 
