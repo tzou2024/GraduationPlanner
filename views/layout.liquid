@@ -15,13 +15,15 @@
             <header class="header">
                 {% if session.loggedIn == true%}
                     <div class="navbar bg-dark centered edges">
-                        <div class="navbar-container">
+                        <div class="navbar-container"><div class="navbar-brand">
+                            <a href="/schedule" class="brand" style="color: white">Grad</a>
+                        </div>
                             <nav class="nav nav-centered nav-light nav-semibold">
                                 <ul class="nav-list">
                                     <li class="nav-item"><a href="/schedule" class="nav-link">My Schedule</a></li>
+                                    <li class="nav-item"><a href="/schedule/genreqs" class="nav-link">Credits</a></li>
+                                    <li class="nav-item"><a href="/major" class="nav-link">Major</a></li>
                                     <li class="nav-item"><a href="/catalogue"class="nav-link">Class Catalogue</a></li>
-                                    <li class="nav-item"><a href="#" class="nav-link">General Reqs</a></li>
-                                    <li class="nav-item"><a href="#" class="nav-link">Contact</a></li>
                                 </ul>
                             </nav>
 

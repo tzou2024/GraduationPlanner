@@ -6,6 +6,7 @@ require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const methodOverride = require('method-override')
+const _ = require('lodash')
 
 //=============================
 // import routes
@@ -14,6 +15,8 @@ const userRoutes = require('./controller/user_routes')
 const catalogueRoutes = require('./controller/catalogue_routes')
 
 const scheduleRoutes = require('./controller/schedule_routes')
+
+const majorRoutes = require('./controller/major_routes')
 
 
 //=============================
@@ -54,6 +57,8 @@ app.use(
 )
 
 
+
+
 //=============================
 // Routes
 //=============================
@@ -63,6 +68,8 @@ app.use('/catalogue', catalogueRoutes)
 app.use('/users', userRoutes)
 //use schedule pathing
 app.use('/schedule', scheduleRoutes)
+
+app.use('/major', majorRoutes)
 
 app.get('/', (req, res) => {
 	res.redirect('/users/login')

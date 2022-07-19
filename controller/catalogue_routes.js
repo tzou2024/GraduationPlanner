@@ -1,9 +1,12 @@
 const express = require('express')
 const Class = require('../models/class')
 const User = require('../models/user')
+const Major = require('../models/major')
+const _ = require('lodash')
 const router = express.Router()
 const classSchema = Class.schema
 
+//json stringify wasn't doin what I wanted
 function objToString (obj) {
     let str = '';
     for (const [p, val] of Object.entries(obj)) {
@@ -12,16 +15,33 @@ function objToString (obj) {
     return str;
 }
 
+//aux. function to remove class from user (with functionality for
+//same class multiple times in schedule)
 function removeClassfromUser(usr, clas){
-    console.log("got here")
-    console.log("usr.classes: ",usr.classes)
-    console.log(Array.isArray(usr.classes))
+    // console.log("got here")
+    // console.log("usr.classes: ",usr.classes)
+    // console.log(Array.isArray(usr.classes))
     let copy = usr.classes.filter((clat) =>{
         return clat.class != clas
     })
     console.log("filtered user: ", copy)
     return copy
 }
+
+//custon middleware in case session expires
+router.use((req,res,next) =>{
+	if(!req.session.hasOwnProperty('loggedIn')){
+		res.redirect('/users/login')
+	
+	}
+	else{
+		next()
+	}
+
+    //you HAVE to call next at the end of the middleware
+    
+})
+
 //=============================
 //DELETE Route Delete Class
 //=============================
@@ -61,18 +81,21 @@ router.delete("/:id", (req,res) =>{
 //=============================
 router.get("/:id/edit", (req,res) =>{
     const classId= req.params.id
-    const catoptions = ["ENGR", "MTH", "SCI", "AHS", "E!", "GENERAL", "NON-DEGREE", "SUST"]
+    //have this in multiple places, should consolidate and export if time
+    const catoptions = ["ENGR", "MTH", "SCI", "AHS", "E","GENERAL", "NON_DEGREE", "SUST"]
     let fulloptions = classSchema.obj.fulfills.enum
 
     Class.findById(classId)
         .then(classf =>{
             
+            
             const keys = Object.keys(classf.credit_and_category)
             const values = Object.values(classf.credit_and_category)
+            //add blank options so it doesn't auto fill
             keys.unshift("")
             catoptions.unshift("")
             values.unshift("")
-            console.log(keys, values)
+            //console.log(keys, values)
             const length = keys.length - 1
 
             res.render('catalogue/edit', {class: classf, catoptions, fulloptions, keys, values, length, session: req.session})
@@ -89,15 +112,18 @@ router.get("/:id/edit", (req,res) =>{
 //GET Request Index
 //=============================
 router.get('/', (req, res) =>{
-    console.log(req.session)
+    //console.log(req.session)
     let session = req.session
     Class.find({})
         .then(classes=>{
             let classesclone = [...classes]
             classesclone.forEach(ell=>{
+                //for display purposes
                 ell.credit_and_category = objToString(ell.credit_and_category)
             })
-            res.render('catalogue/index', {session: session, classes: classesclone})
+            let length = _.range(0,classesclone.length)
+            //console.log("LENGTH: ", length)
+            res.render('catalogue/index', {session: session,length, classes: classesclone})
         })
         .catch(err=>{
             res.json(err)
@@ -108,14 +134,38 @@ router.get('/', (req, res) =>{
 //GET Request Create Class
 //=============================
 router.get('/new', (req, res) =>{
-    console.log("CURRENT SESSION: ",req.session)
+    //console.log("CURRENT SESSION: ",req.session)
     // console.log(req.session)
     // let session = req.session
     //console.log(classSchema)
-    const catoptions = ["","ENGR", "MTH", "SCI", "AHS", "E!", "GENERAL", "NON-DEGREE", "SUST"]
-    let fulloptions = classSchema.obj.fulfills.enum
-    fulloptions.unshift('')
-    res.render('catalogue/new', {session: req.session, catoptions, fulloptions})
+    let fulloptions
+    let major
+    //
+    const catoptions = ["","ENGR", "MTH", "SCI", "AHS", "E","GENERAL", "NON_DEGREE", "SUST"]
+    User.findById(req.session.userId)
+    .then(fuser =>{
+        //console.log("fuser.major",fuser.major)
+        let major = fuser.major
+        let query = {}
+        query["name"] = major 
+        Major.find(query)
+        .then(userMajor =>{
+            //console.log(userMajor[0])
+            fulloptions = Object.keys(userMajor[0]._doc)
+            //remove unnecessary fields
+            let remover = ["_id", "name", "updatedAt", "createdAt", "__v"]
+            remover.forEach(ell =>{
+                _.remove(fulloptions, (number) => number == ell)
+            })
+            fulloptions.unshift("")
+            //console.log("fulloptions", fulloptions)
+            res.render('catalogue/new', {session: req.session, catoptions, fulloptions})
+        })
+    })
+    
+    // let fulloptions = classSchema.obj.fulfills.enum
+    // fulloptions.unshift('')
+    
 })
 
 //=============================
@@ -132,6 +182,7 @@ router.post('/', (req,res) =>{
             [cat1]: parseInt(cred1)
         }
     }
+    //hard coded but it is what it is
     if(cat2 != ''){
         newClass.credit_and_category[cat2] = parseInt(cred2)
     }
@@ -155,18 +206,13 @@ router.post('/', (req,res) =>{
 //GET Request Search Class
 //=============================
 router.get('/search', (req, res) =>{
-    //console.log("CURRENT SESSION: ",req.session)
-    //console.log(req.session)
-    // let session = req.session
-    // const catoptions = ["","ENGR", "MTH", "SCI", "AHS", "E!", "GENERAL", "NON-DEGREE", "SUST"]
-    // let fulloptions = classSchema.obj.fulfills.enum
-    // fulloptions.unshift('')
 
     //create route to search for classes
-   
+    //if time, search by fulfills
     let keys= Object.keys(classSchema.obj)
     
-     //TODO: add search for credit category
+    
+     //TODO: add search for credit category/fulfills
     keys = keys.filter(ell=>{
         return ell != "credit_and_category"
     })
@@ -188,7 +234,7 @@ router.post('/search', (req,res) =>{
     //console.log(searchcat)
     if (["name", "place", "fulfills"].includes(searchcat)){
         let query = {}
-        const re = new RegExp(`${searchterm}`)
+        const re = new RegExp(`${searchterm}`, `i`)
         query[searchcat] = re
         Class.find(query)
         .then(foundClasses=>{
@@ -218,7 +264,7 @@ router.post('/search', (req,res) =>{
 })
 
 //=============================
-//PUT Request Add class to my 
+//PUT Request Add class to my schedule
 //=============================
 router.put('/search', (req,res) =>{
     console.log(req.session.userId)
@@ -230,9 +276,14 @@ router.put('/search', (req,res) =>{
         ob["class"] = classname
         ob["semester"] = parseInt(semester)
         user.classes.push(ob)
+        user.markModified()
         console.log(user)
-        user.save()
-        res.redirect('/catalogue/search')
+        return user.save()
+
+    })
+    .then(done =>{
+        //sometimes i have to refresh the schedule but everything is in the .then so I don't really get it
+        setTimeout(() => res.redirect('/schedule'), 200)
     })
     .catch(error=>{
         console.log("Error adding class to user: ", error)
