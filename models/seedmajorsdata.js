@@ -10,7 +10,21 @@ module.exports = [
         options: ["UxD", "CompArch", "Complexity", "CompRobo"]
 
     },
+    },
+    {name: "MechE",
+    
+    majorReq: {
+        needed: 5,
+        options: ["MechSolids", "Dynamics", "Thermo", "Transport", "MechDes"]
+    },
+    majorElective: {
+        needed: 1,
+        options: ["Design for Manufacturing","Controls","FunRobo"]
 
-
+    },
+    majorMath: {
+        needed: 1,
+        options: ["PDE's", "Scientific Computing", "Nonlinear Dynamics"]
+    }
     }
 ]

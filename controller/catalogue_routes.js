@@ -62,6 +62,10 @@ router.delete("/:id", (req,res) =>{
 //GET Route Edit Class
 //=============================
 router.get("/:id/edit", (req,res) =>{
+    if(!req.session.hasOwnProperty('loggedIn')){
+        res.render('users.login')
+
+    }
     const classId= req.params.id
     const catoptions = ["ENGR", "MTH", "SCI", "AHS", "E","GENERAL", "NON_DEGREE", "SUST"]
     let fulloptions = classSchema.obj.fulfills.enum
@@ -91,6 +95,10 @@ router.get("/:id/edit", (req,res) =>{
 //GET Request Index
 //=============================
 router.get('/', (req, res) =>{
+    if(!req.session.hasOwnProperty('loggedIn')){
+        res.render('users.login')
+
+    }
     console.log(req.session)
     let session = req.session
     Class.find({})
@@ -112,6 +120,10 @@ router.get('/', (req, res) =>{
 //GET Request Create Class
 //=============================
 router.get('/new', (req, res) =>{
+    if(!req.session.hasOwnProperty('loggedIn')){
+        res.render('users.login')
+
+    }
     console.log("CURRENT SESSION: ",req.session)
     // console.log(req.session)
     // let session = req.session
@@ -181,6 +193,10 @@ router.post('/', (req,res) =>{
 //GET Request Search Class
 //=============================
 router.get('/search', (req, res) =>{
+    if(!req.session.hasOwnProperty('loggedIn')){
+        res.render('users.login')
+
+    }
     //console.log("CURRENT SESSION: ",req.session)
     //console.log(req.session)
     // let session = req.session
@@ -215,7 +231,7 @@ router.post('/search', (req,res) =>{
     //console.log(searchcat)
     if (["name", "place", "fulfills"].includes(searchcat)){
         let query = {}
-        const re = new RegExp(`${searchterm}`)
+        const re = new RegExp(`${searchterm}`, `i`)
         query[searchcat] = re
         Class.find(query)
         .then(foundClasses=>{
@@ -276,6 +292,10 @@ router.put('/search', (req,res) =>{
 //GET Request show class 
 //=============================
 router.get('/:id', (req,res) =>{
+    if(!req.session.hasOwnProperty('loggedIn')){
+        res.render('users.login')
+
+    }
     const classId = req.params.id
 
     Class.findById(classId)

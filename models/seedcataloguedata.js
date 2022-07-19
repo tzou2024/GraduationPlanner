@@ -22,6 +22,13 @@ module.exports = [
      },
      fulfills: "AHSFound"
     },
+    {
+        name: "Demand", 
+        credit_and_category: {
+            "AHS": 4
+    },
+    fulfills: "AHSFound"
+   },
      {
          name: "ModSim",
          credit_and_category: {
@@ -81,6 +88,20 @@ module.exports = [
             "ENGR": 4
         },
         fulfills: "mandatory"
-    }
+    },
+    {
+        name: "SofDes",
+        credit_and_category: {
+            "ENGR": 4
+        },
+        fulfills: "majorReq"
+    },
+    {
+        name: "Photography",
+        credit_and_category: {
+            "AHS": 4
+        },
+        fulfills: "ahsConcentration"
+    },
 
  ]

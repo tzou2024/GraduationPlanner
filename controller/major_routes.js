@@ -7,6 +7,10 @@ const router = express.Router()
 const classSchema = Class.schema
 
 router.get('/', (req,res) =>{
+    if(!req.session.hasOwnProperty('loggedIn')){
+        res.render('users.login')
+
+    }
     let userID = req.session.userId
     let usrClassList = []
 
@@ -62,6 +66,9 @@ router.get('/', (req,res) =>{
                 if ((fulloptions[`${ell.fulfills}`]["options"].includes(ell.name)) && (fulloptions[`${ell.fulfills}`]["has"].length < fulloptions[`${ell.fulfills}`]["needed"]) && (!fulloptions[`${ell.fulfills}`]["has"].includes(ell.name))){
                     fulloptions[`${ell.fulfills}`]["has"].push(ell.name)
                 }
+                else if(ell.fulfills == "ahseConcentration"){
+                    fulloptions["ahseConcentration"]["has"].push(ell.name)
+                }
                 else{
                     fulloptions["additional"]["has"].push(ell.name)
                 }
@@ -99,6 +106,18 @@ router.get('/', (req,res) =>{
                             col2.push("❌")
                         }
                     })
+                }
+                else if (key == "ahseConcentration"){
+                    for(let i = 0;i < value.needed;i++){
+                        col1.push(key)
+                        if(value.has[i]){
+                            col2.push("✅" + value.has[i])
+                        }
+                        else{
+                            col2.push("❌")
+                        }
+                    }
+
                 }
                 else{
                     for(let i = 0;i < value.needed;i++){

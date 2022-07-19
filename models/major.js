@@ -39,6 +39,13 @@ const majorSchema = new Schema({
     majorElective: {
         type: Object
     },
+    ahseConcentration: {
+        type: Object,
+        default: {
+            needed: 3,
+            options: []
+        }
+    },
     additional: {
         type: Object,
         default: {

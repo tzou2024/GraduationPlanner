@@ -22,8 +22,7 @@ const userSchema = new Schema({
         required: true
     },
     major:{
-        type: String,
-        enum: ["ME", "ECE", "EBio", "E:C", "E:D", "E:Robo", "E:Sust"]
+        type: String
     },
     classes: {
         type: Array,
