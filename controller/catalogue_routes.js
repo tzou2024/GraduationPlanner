@@ -302,12 +302,9 @@ router.put('/search', (req,res) =>{
         user.classes.push(ob)
         user.markModified()
         console.log(user)
-        return user.save()
+        user.save()
+        res.redirect('/schedule')
 
-    })
-    .then(done =>{
-        //sometimes i have to refresh the schedule but everything is in the .then so I don't really get it
-        setTimeout(() => res.redirect('/schedule'), 200)
     })
     .catch(error=>{
         console.log("Error adding class to user: ", error)

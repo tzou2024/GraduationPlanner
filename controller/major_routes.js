@@ -8,6 +8,7 @@ const classSchema = Class.schema
 
 //custon middleware for sesion expiration
 router.use((req,res,next) =>{
+    console.log(req.session)
 	if(!req.session.hasOwnProperty('loggedIn')){
 		res.redirect('/users/login')
 	
@@ -73,12 +74,19 @@ router.get('/', (req,res) =>{
             //====
             //go through usr classes
             usrClassList.forEach(ell =>{
+                //if fulfillment isn't in major keys for some seeding error reason, shove it into additional classes
+                if(!(Object.keys(fulloptions).includes(ell.fulfills))){
+                    fulloptions["additional"]["has"].push(ell.name)
+                }
+                //if what the class fulfills is in what the major requires, the class isn't overfilling the number of required classes, and it isn't already in the classes you've taken in that cateogrym add it
                 if ((fulloptions[`${ell.fulfills}`]["options"].includes(ell.name)) && (fulloptions[`${ell.fulfills}`]["has"].length < fulloptions[`${ell.fulfills}`]["needed"]) && (!fulloptions[`${ell.fulfills}`]["has"].includes(ell.name))){
                     fulloptions[`${ell.fulfills}`]["has"].push(ell.name)
                 }
+                //for users that need to create classes bc they are studying abroad to fulfill their arts, and humanities credits
                 else if(ell.fulfills == "ahseConcentration"){
                     fulloptions["ahseConcentration"]["has"].push(ell.name)
                 }
+                //if it makes it through all that, add it to additional as well
                 else{
                     fulloptions["additional"]["has"].push(ell.name)
                 }
@@ -118,7 +126,7 @@ router.get('/', (req,res) =>{
                     value.options.forEach(ell=>{
                         col1.push(ell)
                         if(value.has.includes(ell)){
-                            col2.push("✅" + ell)
+                            col2.push("✅\n" + ell)
                         }
                         else{
                             col2.push("❌")
@@ -129,7 +137,7 @@ router.get('/', (req,res) =>{
                     for(let i = 0;i < value.needed;i++){
                         col1.push(key)
                         if(value.has[i]){
-                            col2.push("✅" + value.has[i])
+                            col2.push("✅\n" + value.has[i])
                         }
                         else{
                             col2.push("❌")
@@ -145,13 +153,13 @@ router.get('/', (req,res) =>{
 
                     if(value.needed == value.has.length){
                         for(let i = 0;i<value.needed;i++){
-                            col2.push("✅" + value.has[i])
+                            col2.push("✅\n" + value.has[i])
                         }
                     }
                     else{
                         for(let i = 0;i<value.needed;i++){
                             if(value.has[i]){
-                                col2.push("✅" + value.has[i])
+                                col2.push("✅\n" + value.has[i])
                             }
                             else{
                                 col2.push("❌\n" + value.options.join("\n"))

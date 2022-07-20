@@ -97,11 +97,25 @@ module.exports = [
         fulfills: "majorReq"
     },
     {
+        name: "MechSolids",
+        credit_and_category: {
+            "ENGR": 4
+        },
+        fulfills: "majorReq"
+    },
+    {
         name: "Photography",
         credit_and_category: {
             "AHS": 4
         },
-        fulfills: "ahsConcentration"
+        fulfills: "ahseConcentration"
+    },
+    {
+        name: "FunRobo",
+        credit_and_category: {
+            "ENGR": 4
+        },
+        fulfills: "majorElective"
     },
 
  ]
