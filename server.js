@@ -79,6 +79,6 @@ app.get('/', (req, res) => {
 // Open Ports
 //=============================
 const PORT = process.env.PORT
-app.listen(PORT, () => {
+app.listen(process.env.PORT || 3000, () => {
 	console.log(`app is listening on port: ${PORT}`)
 })
