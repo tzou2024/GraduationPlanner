@@ -136,14 +136,17 @@ router.get('/genreqs', (req,res) =>{
             //THIS RIGHT HERE IS A DOOSIE
             let promises = fuser.classes.map(function(classInUsrClasses){
                 return Class.findById(classInUsrClasses.class).then(function(fclass){
-                    for (const [key, value] of Object.entries(fclass.credit_and_category)) {
-                        //console.log(key)
-                        //console.log(classstruct[classInUsrClasses.semester - 1])
-                        classstruct[classInUsrClasses.semester - 1][`${key}`] += value
-                        // console.log("UPDATED TO ")
-                        // console.log(classstruct[classInUsrClasses.semester - 1])
-
-                      }
+                    if(fclass.hasOwnProperty("credit_and_category")){
+                        for (const [key, value] of Object.entries(fclass.credit_and_category)) {
+                            //console.log(key)
+                            //console.log(classstruct[classInUsrClasses.semester - 1])
+                            classstruct[classInUsrClasses.semester - 1][`${key}`] += value
+                            // console.log("UPDATED TO ")
+                            // console.log(classstruct[classInUsrClasses.semester - 1])
+    
+                          }
+                    }
+                    
                     return classstruct
                 })
             })
