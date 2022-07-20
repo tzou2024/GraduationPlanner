@@ -3,7 +3,7 @@
 This is a baseline graduation requirement scheduler built for my College, with a CRUDable course catalog, user schedule, and visualizations for what classes/credits a student needs to fulfill to graduate in accordance with their major.
 
 ## Technology Used:
-Express, node, bcrypt, dotenv, liquid, lodash, mongoose, superkube CSS
+Express, node, bcrypt, dotenv, liquid, lodash, mongoose, superkube CSS, deployed with Heroku
 
 ## Approach Taken:
 I started with wireframes and user stories, trying to get an idea of what features I wanted. Then, I made a schema for classes and filled out the catalogue routes, the schedule, and the credits tab with limited seed data. I finally made a major schema and filled out the major requirements tab. Because majors are complicated and all have different types/requirements/categories, I made the schema loose and accommodated for the personalization of majors. I finally added more seed data.
