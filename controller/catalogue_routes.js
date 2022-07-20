@@ -296,6 +296,7 @@ router.put('/search', (req,res) =>{
     let {classname, semester} = req.body
     User.findById(Id)
     .then(user=>{
+        if(parseInt(semester)){
         let ob = {}
         ob["class"] = classname
         ob["semester"] = parseInt(semester)
@@ -303,6 +304,8 @@ router.put('/search', (req,res) =>{
         user.markModified()
         console.log(user)
         user.save()
+        }
+        
         res.redirect('/schedule')
 
     })
