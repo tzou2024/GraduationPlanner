@@ -75,11 +75,11 @@ router.get('/', (req,res) =>{
             //go through usr classes
             usrClassList.forEach(ell =>{
                 //if fulfillment isn't in major keys for some seeding error reason, shove it into additional classes
-                if(!(Object.keys(fulloptions).includes(ell.fulfills))){
+                if((!(Object.keys(fulloptions).includes(ell.fulfills))) || (ell.fulfills == "") || (!ell.hasOwnProperty('fulfills'))){
                     fulloptions["additional"]["has"].push(ell.name)
                 }
                 //if what the class fulfills is in what the major requires, the class isn't overfilling the number of required classes, and it isn't already in the classes you've taken in that cateogrym add it
-                if ((fulloptions[`${ell.fulfills}`]["options"].includes(ell.name)) && (fulloptions[`${ell.fulfills}`]["has"].length < fulloptions[`${ell.fulfills}`]["needed"]) && (!fulloptions[`${ell.fulfills}`]["has"].includes(ell.name))){
+                else if ((fulloptions[`${ell.fulfills}`]["options"].includes(ell.name)) && (fulloptions[`${ell.fulfills}`]["has"].length < fulloptions[`${ell.fulfills}`]["needed"]) && (!fulloptions[`${ell.fulfills}`]["has"].includes(ell.name))){
                     fulloptions[`${ell.fulfills}`]["has"].push(ell.name)
                 }
                 //for users that need to create classes bc they are studying abroad to fulfill their arts, and humanities credits
