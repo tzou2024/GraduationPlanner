@@ -292,7 +292,6 @@ router.put("/:id/:semester", (req,res) =>{
             console.log("NEWMAP: ", newmap)
             fuser.classes = newmap
             console.log("NEW FUSER>CLASSES: ", fuser.classes)
-            delete fuser.semnumbtochangeto
             return fuser.save()
                 .then(savedDoc =>{
                     console.log(savedDoc == fuser)
