@@ -36,6 +36,7 @@ This page should have information about a singular class with RESTful routing.
 | Update  | class/:id     | PUT | Updates a Class | 
 | Destroy | class/:id     | DELETE | Deletes a class |
 
+
 ### General Credit Breakdown 
 This page should show information about the total credit requirments for ENG, SCI, ect. and how much they need to take/how much they have left to do as part of general graudation requirements.
 
@@ -72,12 +73,10 @@ This page shoud be some sort of checker to see whether the student is satysfying
 | ----------- | ----------- |
 | Username   | String    |
 | Password | String |
-| Plan | Subschema | 
+| Plan | Object Array | 
 
 ### Plan Subchema
 
-| Key     | Value |
-| {req}   | {Class Id} | 
 
 
 ## Stretch Goals
