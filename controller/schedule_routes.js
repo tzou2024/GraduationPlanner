@@ -26,7 +26,7 @@ router.get('/', (req,res) => {
 
     User.findById(userId)
     .then( (usr)=>{
-        // console.log("USR IN SCHEDULE", usr)
+        console.log("USR IN SCHEDULE", usr)
         let classList = usr.classes
         let classstruct = []
         for(let i=1;i<=8;i++){
@@ -136,16 +136,14 @@ router.get('/genreqs', (req,res) =>{
             //THIS RIGHT HERE IS A DOOSIE
             let promises = fuser.classes.map(function(classInUsrClasses){
                 return Class.findById(classInUsrClasses.class).then(function(fclass){
-                    if(fclass.hasOwnProperty("credit_and_category")){
                         for (const [key, value] of Object.entries(fclass.credit_and_category)) {
-                            //console.log(key)
-                            //console.log(classstruct[classInUsrClasses.semester - 1])
-                            classstruct[classInUsrClasses.semester - 1][`${key}`] += value
-                            // console.log("UPDATED TO ")
-                            // console.log(classstruct[classInUsrClasses.semester - 1])
-    
-                          }
-                    }
+                        //console.log(key)
+                        //console.log(classstruct[classInUsrClasses.semester - 1])
+                        classstruct[classInUsrClasses.semester - 1][`${key}`] += value
+                        // console.log("UPDATED TO ")
+                        // console.log(classstruct[classInUsrClasses.semester - 1])
+
+                      }
                     
                     return classstruct
                 })
@@ -274,24 +272,62 @@ router.put("/:id/:semester", (req,res) =>{
     console.log("REQ BODY: ", req.body)
     User.findById(userId)
         .then(fuser =>{
+
+            /*
+            function removeClassfromUser(usr, clas, numb){
+        // console.log("got here")
+        console.log("usr.classes: ",usr.classes)
+
+        let objectToFind = {
+            class: clas,
+            semester: parseInt(numb)
+        }
+        console.log("objectobjectToFind", objectToFind)
+
+        let idx = usr.classes.findIndex(p=>_.isEqual(p, objectToFind))
+
+        console.log(idx)
+
+        if(idx > -1){
+            usr.classes.splice(idx,1)
+        }
+            */
             console.log("SEMESTER_TO_CHANGE_TO: ",semester_to_change_to)
             console.log("FUSER>CLASSES: )", fuser.classes)
-            const newmap = fuser.classes.map(ell =>{
-                // console.log("ell.class: ",ell.class,"ID: ",ID)
-                if((ell.class == ID) && (ell.semester == semnumb)){
+
+            let objectToFind = {
+                class: ID,
+                semester: parseInt(semnumb)
+            }
+            let objectToChangeTo = {
+                class: ID,
+                semester: parseInt(semester_to_change_to)
+            }
+
+            let idx = fuser.classes.findIndex(p=>_.isEqual(p, objectToFind))
+
+            if(idx > -1){
+                fuser.classes.splice(idx,1, objectToChangeTo)
+            }
+            
+            // const newmap = fuser.classes.map(ell =>{
+            //     // console.log("ell.class: ",ell.class,"ID: ",ID)
+            //     if((ell.class == ID) && (ell.semester == semnumb)){
                     
-                    ell.semester = semester_to_change_to
-                    console.log("chnged semester")
-                    return ell
-                }
-                else{
-                    // console.log("iteratednotfound")
-                    return ell
-                }
-            }) 
-            console.log("NEWMAP: ", newmap)
-            fuser.classes = newmap
-            console.log("NEW FUSER>CLASSES: ", fuser.classes)
+            //         ell.semester = semester_to_change_to
+            //         console.log("chnged semester")
+            //         return ell
+            //     }
+            //     else{
+            //         // console.log("iteratednotfound")
+            //         return ell
+            //     }
+            // }) 
+            // console.log("NEWMAP: ", newmap)
+            // fuser.classes = newmap
+            // console.log("NEW FUSER>CLASSES: ", fuser.classes)
+            fuser.markModified("classes")
+            delete fuser.semnumbtochangeto
             return fuser.save()
                 .then(savedDoc =>{
                     console.log(savedDoc == fuser)

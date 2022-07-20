@@ -195,30 +195,36 @@ router.post('/', (req,res) =>{
     //console.log(req.body)
     let copy = {...req.body}
     let{name, place, cat1, cred1, cat2, cred2, cat3, cred3, fulfills} = copy
-    let newClass = {
-        name: name,
-        place: place,
-        credit_and_category: {
-            [cat1]: parseInt(cred1)
+    if((cat1 != "") && (cred1 != "") && (name != "")){
+        let newClass = {
+            name: name,
+            place: place,
+            credit_and_category: {
+                [cat1]: parseInt(cred1)
+            }
         }
+        //hard coded but it is what it is
+        if(cat2 != ''){
+            newClass.credit_and_category[cat2] = parseInt(cred2)
+        }
+        if(cat3 != ''){
+            newClass.credit_and_category[cat3] = parseInt(cred3)
+        }
+        if(fulfills != ''){
+            newClass['fulfills'] = fulfills
+        }
+        //console.log(newClass)
+        Class.create(newClass)
+            .then(fruit =>{
+                console.log("CLASS CREATED:", fruit)
+                res.redirect('/catalogue')
+            })
+            .catch(err => res.json(err))
     }
-    //hard coded but it is what it is
-    if(cat2 != ''){
-        newClass.credit_and_category[cat2] = parseInt(cred2)
+    else{
+        res.redirect('/catalogue')
     }
-    if(cat3 != ''){
-        newClass.credit_and_category[cat3] = parseInt(cred3)
-    }
-    if(fulfills != ''){
-        newClass['fulfills'] = fulfills
-    }
-    //console.log(newClass)
-    Class.create(newClass)
-        .then(fruit =>{
-            console.log("CLASS CREATED:", fruit)
-            res.redirect('/catalogue')
-        })
-        .catch(err => res.json(err))
+    
     
 })
 
