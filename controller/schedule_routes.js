@@ -24,6 +24,17 @@ router.get('/', (req,res) => {
     // console.log("got to schedule")
     let userId = req.session.userId
 
+    // var promises = [obj1, obj2].map(function(obj){
+    //     return db.query('obj1.id').then(function(results){
+    //        obj1.rows = results
+    //        return obj1
+    //     })
+    //   })
+    //   Promise.all(promises).then(function(results) {
+    //       console.log(results)
+    //   })
+
+
     User.findById(userId)
     .then( (usr)=>{
         console.log("USR IN SCHEDULE", usr)
@@ -31,14 +42,30 @@ router.get('/', (req,res) => {
         let classstruct = []
         for(let i=1;i<=8;i++){
             let semesterstruct = []
-            classList.forEach(cls => {
-                if(cls.semester == i){
-                Class.findById(cls.class)
-                .then(res=>{
-                    // console.log(i, res)
-                    semesterstruct.push(res)})}
+
+            let onesem = classList.filter(cls=>{
+                return cls.semester == i
             })
-            classstruct.push(semesterstruct)
+
+            let promises = onesem.map(function(cls){
+                return Class.findById(cls.class).then(function(results){
+                    return results
+                })
+            })
+
+            promises.all(promises).then(function(results){
+                console.log(i, results)
+                classstruct.push(results)
+            })
+
+            // classList.forEach(cls => {
+            //     if(cls.semester == i){
+            //     Class.findById(cls.class)
+            //     .then(res=>{
+            //         // console.log(i, res)
+            //         semesterstruct.push(res)})}
+            // })
+            // classstruct.push(semesterstruct)
         }
         //setTimeout(() => console.log("classstruct: ",classstruct), 500)
         res.render('schedule/index', {classes: classstruct,

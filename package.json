@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
+    "start": "nodemon server.js",
     "seed": "node models/seedcatalogue.js",
     "deleteUsers": "node models/deleteUsers.js",
     "troubleshoot": "npm run seed npm run deleteUsers"
