@@ -43,29 +43,29 @@ router.get('/', (req,res) => {
         for(let i=1;i<=8;i++){
             let semesterstruct = []
 
-            let onesem = classList.filter(cls=>{
-                return cls.semester == i
-            })
-
-            let promises = onesem.map(function(cls){
-                return Class.findById(cls.class).then(function(results){
-                    return results
-                })
-            })
-
-            promises.all(promises).then(function(results){
-                console.log(i, results)
-                classstruct.push(results)
-            })
-
-            // classList.forEach(cls => {
-            //     if(cls.semester == i){
-            //     Class.findById(cls.class)
-            //     .then(res=>{
-            //         // console.log(i, res)
-            //         semesterstruct.push(res)})}
+            // let onesem = classList.filter(cls=>{
+            //     return cls.semester == i
             // })
-            // classstruct.push(semesterstruct)
+
+            // let promises = onesem.map(function(cls){
+            //     return Class.findById(cls.class).then(function(results){
+            //         return results
+            //     })
+            // })
+
+            // promises.all(promises).then(function(results){
+            //     console.log(i, results)
+            //     classstruct.push(results)
+            // })
+
+            classList.forEach(cls => {
+                if(cls.semester == i){
+                Class.findById(cls.class)
+                .then(res=>{
+                    // console.log(i, res)
+                    semesterstruct.push(res)})}
+            })
+            classstruct.push(semesterstruct)
         }
         //setTimeout(() => console.log("classstruct: ",classstruct), 500)
         res.render('schedule/index', {classes: classstruct,
